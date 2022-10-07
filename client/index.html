@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Foodkeeper</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="index.html">Foodkeeper</a></div>
+        <ul class="nav-links">
+            <div class="menu"> 
+                <li><a href="index.html">Home</a></li>
+                <li class="groceries">
+                    <a>My Grocery</a>
+                    <ul class="dropdown">
+                        <li><a href="/">Spoiling Soon</a></li>
+                        <li><a href="/">Most expensive</a></li>
+                    </ul>
+                </li>
+                <li><a>To Do List</a></li>
+            </div>  
+        </ul>   
+    </nav>
+    <div class="slides-container">
+        <img class="slides" src="./img/slide-1.JPG">
+        <h3 class="first-text">Save with Foodkeeper</h3>
+        <img class="slides" src="./img/slide-2.JPG">
+        <img class="slides" src="./img/slide-3.JPG">
+    </div>
+    <div><h3 class="question">What did you get today?</h3></div>
+
+    <form method="post">
+        <ul>
+           <li>
+             <label for="name">Item Name:</label>
+             <input type="text" id="name"/>
+           </li> 
+           <li>
+             <label for="mail">Price:</label>
+             <input type="email" id="mail" name="user_email" />
+           </li>
+        </ul>
+        <li class="button">
+            <button type="submit">Submit</button>
+          </li>
+    </form>
+    <script src="./scripts/main.js"></script>
+</body>
+</html>
