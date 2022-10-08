@@ -5,10 +5,10 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Foodkeeper</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <script src='../public/javascripts/main.js'></script>
 
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../public/stylesheets/style.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -28,14 +28,14 @@
         </ul>   
     </nav>
     <div class="slides-container">
-        <img class="slides" src="./img/slide-1.JPG">
+        <img class="slides" src="../public/images/slide-1.JPG">
         <h3 class="first-text">Save with Foodkeeper</h3>
-        <img class="slides" src="./img/slide-2.JPG">
-        <img class="slides" src="./img/slide-3.JPG">
+        <img class="slides" src="../public/images/slide-2.JPG">
+        <img class="slides" src="../public/images/slide-3.JPG">
     </div>
     <div><h3 class="question">What did you get today?</h3></div>
 
-    <form action="add-item" method="post">
+    <form action="/item" method="post">
         <ul>
            <li>
              <label for="item">Item Name:</label>
@@ -47,9 +47,9 @@
            </li>
         </ul>
         <li class="button">
-            <button type="submit">Submit</button>
+            <input type="submit" value="Submit">
           </li>
     </form>
-    <script src="./scripts/main.js"></script>
+    <script src="../public/javascripts/main.js"></script>
 </body>
 </html>
