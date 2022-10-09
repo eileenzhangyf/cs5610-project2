@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/itemModel.js');
 
-console.log("test");
-router.route('/').post(function(req, res) {
-    console.log("trying to post");
 
+router.post('/',(req, res)=> {
+  //console.log(req.body);
     const item = new Item({
-        item: req.body.name,
-        price: req.body.price,
+        name: req.body.item[0],
+        price: req.body.item[1],
       });
-      
+     
     item.save().then(data=>{
+      console.log(item);
       console.log("successfully created new item");
     }).catch(error=>{
       console.log(error);
@@ -20,5 +20,5 @@ router.route('/').post(function(req, res) {
   
 
 })
-console.log("test2")
+
 module.exports = router;

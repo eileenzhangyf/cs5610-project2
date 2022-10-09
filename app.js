@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen(3000,()=>{
   console.log('Server listening on 3000');
@@ -17,8 +17,6 @@ mongoose.connect(uri, () => {
   console.log("Connected to Mongo DB Successfully!!");
 })
 
-const path = require('path');
-const router = express.Router();
 
 const usersRouter = require('./routes/items.js');
 console.log("get item router");
