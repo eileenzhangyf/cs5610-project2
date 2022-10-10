@@ -1,5 +1,7 @@
 const express = require('express')
+const path = require('path');
 const app = express()
+const router = express.Router();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -16,17 +18,24 @@ const uri = "mongodb+srv://Yifan:8qTRDXVXgD6MwCno@cluster0.ohharax.mongodb.net/?
 mongoose.connect(uri, () => {
   console.log("Connected to Mongo DB Successfully!!");
 })
+router.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/views/index.html'));
+}); 
 
+router.get('/list',function(req,res){
+  res.sendFile(path.join(__dirname+'/views/shopping-list.html'));
+}); 
 
 const usersRouter = require('./routes/items.js');
 console.log("get item router");
 app.use('/item', usersRouter);
-app.use('/',(req,res)=>{
+/* app.use('/',(req,res)=>{
   res.sendFile(__dirname+'/views/index.html');
-});
+}); */
+app.use('/',router)
 
-/* router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/views/index.html'));
+/* app.use('/list',(req,res)=>{
+  res.sendFile(__dirname+'/views/shopping-list.html');
 }); */
 
 
@@ -34,5 +43,4 @@ app.use('/',(req,res)=>{
 
 
 
-
-//module.exports = app;
+module.exports = app;
