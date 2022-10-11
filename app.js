@@ -26,19 +26,13 @@ router.get('/list',function(req,res){
   res.sendFile(path.join(__dirname+'/views/shopping-list.html'));
 }); 
 
+
 const usersRouter = require('./routes/items.js');
-console.log("get item router");
 app.use('/item', usersRouter);
-/* app.use('/',(req,res)=>{
-  res.sendFile(__dirname+'/views/index.html');
-}); */
-app.use('/',router)
+const buyRouter = require('./routes/buy.js');
+app.use('/buy', buyRouter);
 
-/* app.use('/list',(req,res)=>{
-  res.sendFile(__dirname+'/views/shopping-list.html');
-}); */
-
-
+app.use('/',router);
 
 
 

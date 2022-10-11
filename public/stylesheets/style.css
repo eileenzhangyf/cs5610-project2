@@ -169,3 +169,15 @@ label {
     width: 60px;
   }*/
 
+.shopping-question{
+    margin-top: 30px; 
+    color:  rgb(27, 69, 55);
+    margin-left: 320px; 
+    align-items: center;
+}
+
+.shopping-form{
+    height: 150px;
+    background-color: rgb(188, 233, 218);
+}
+
