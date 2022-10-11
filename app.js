@@ -1,12 +1,14 @@
 const express = require('express')
 const path = require('path');
 const app = express()
+const port = 7777
 const router = express.Router();
 const bodyParser = require('body-parser');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.listen(3000,()=>{
-  console.log('Server listening on 3000');
+app.listen(port,()=>{
+  console.log(`Server listening on ${port}`);
 })
 
 app.use('/images',express.static(__dirname+'/public/images'));
@@ -18,29 +20,36 @@ const uri = "mongodb+srv://Yifan:8qTRDXVXgD6MwCno@cluster0.ohharax.mongodb.net/?
 mongoose.connect(uri, () => {
   console.log("Connected to Mongo DB Successfully!!");
 })
-router.get('/',function(req,res){
+
+////////////////////////////////////
+// Page Redirection
+////////////////////////////////////
+router.get('/', function(req,res){
   res.sendFile(path.join(__dirname+'/views/index.html'));
 }); 
 
-router.get('/list',function(req,res){
+router.get('/list', function(req,res){
   res.sendFile(path.join(__dirname+'/views/shopping-list.html'));
 }); 
+
+router.get('/storage', function(req, res) {
+  res.sendFile(path.join(__dirname+'/views/storage-list.html'));
+});
+
+////////////////////////////////////
 
 const usersRouter = require('./routes/items.js');
 console.log("get item router");
 app.use('/item', usersRouter);
-/* app.use('/',(req,res)=>{
-  res.sendFile(__dirname+'/views/index.html');
-}); */
+
+
 app.use('/',router)
 
-/* app.use('/list',(req,res)=>{
-  res.sendFile(__dirname+'/views/shopping-list.html');
-}); */
 
-
-
-
+// Setting Favicon
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
+});
 
 
 module.exports = app;
