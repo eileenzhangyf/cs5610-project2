@@ -181,3 +181,19 @@ label {
     background-color: rgb(188, 233, 218);
 }
 
+.list-h2{
+    margin-top: 50px;
+    margin-left: 340px;
+    color: #1c4b35;
+}
+
+.carrot-button{
+    height: 120px;
+    width: 70px;
+    margin-left: 520px;
+    margin-top: 30px;
+}
+.carrot-img{
+    height: 110px;
+}
+
