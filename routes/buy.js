@@ -9,8 +9,8 @@ router.post('/',(req,res)=>{
         name: req.body.buy
     });
     buy.save().then(data=>{
-        console.log(buy);
         console.log("successfully created new item");
+        res.status(204).send();
       }).catch(error=>{
         console.log(error);
         console.log("there is an error");

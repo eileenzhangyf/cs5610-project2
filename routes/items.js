@@ -11,8 +11,8 @@ router.post('/',(req, res)=> {
       });
      
     item.save().then(data=>{
-      console.log(item);
       console.log("successfully created new item");
+      res.status(204).send();
     }).catch(error=>{
       console.log(error);
       console.log("there is an error");

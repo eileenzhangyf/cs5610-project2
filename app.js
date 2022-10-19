@@ -45,6 +45,8 @@ router.get('/storage', function(req, res) {
 const usersRouter = require('./routes/items.js');
 app.use('/item', usersRouter);
 
+const buyRouter = require('./routes/buy.js');
+app.use('/buy',buyRouter);
 
 app.use('/',router);
 
