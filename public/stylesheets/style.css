@@ -209,3 +209,8 @@ img.carrot-img{
     margin-top: 30px;
 }
 
+#shopping-list-ul{
+    display: table;
+    margin: 20px auto;
+}
+
