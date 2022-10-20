@@ -5,25 +5,27 @@ button[0].addEventListener('click', function(e) {
   fetch('/buy', {method: 'GET'})
     .then(function(response) {
       if(response.ok) {
-        //console.log(response.json());
         return response.json();
       }
       throw new Error('Request failed.');
     })
     .then(function(data){
-      //console.log(data[0]);
       var ul = document.getElementById("shopping-list-ul");
+      const set = new Set();
       for(let i = 0;i<data.length;i++){
         var item = data[i]['name'];
-        var li = document.createElement("li");
-        li.appendChild(document.createTextNode(item));
-        ul.appendChild(li);
+        if(!set.has(item)){
+          var li = document.createElement("li");
+          li.appendChild(document.createTextNode(item));
+          ul.appendChild(li);
+        }
+        set.add(item)
       }
     })
     .catch(function(error) {
       console.log(error);
     });
-});
+},{once:true});
 
 
 
