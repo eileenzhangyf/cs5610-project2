@@ -212,17 +212,14 @@ img.carrot-img{
 
 #shopping-list-ul{
     display: table;
-    margin: 20px auto;
+    margin: 40px auto;
 }
 
 .footer{    
+    min-height:50px; 
     background-color: teal;
-    position: absolute;
-    width: 100%;
-    padding-top: 15px;
-    height: 50px;
     text-align: center;
-    bottom: 0;
+    padding-top: 15px;
 } 
 
 .author-footer{
