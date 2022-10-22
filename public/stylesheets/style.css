@@ -242,3 +242,20 @@ img.carrot-img{
     text-align: center;
     padding-top: 15px;
 }
+
+.done-button{
+    display: block;
+    margin: 30px auto;
+    background-color: #54886e;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 5px;
+    text-transform: uppercase;
+    height: 40px;
+    width: 150px;
+    color: ivory;
+}
+
+.done-button:hover{
+    background-color: rgb(120, 184, 184);
+}

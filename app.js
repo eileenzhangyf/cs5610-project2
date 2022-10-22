@@ -57,6 +57,11 @@ app.get('/buy',(req,res)=>{
   })
 });
 
+app.delete('/done',(req,res)=>{
+  db.collection('buys').deleteMany();
+  console.log(res);
+})
+
 // Setting Favicon
 app.get('/favicon.ico', (req, res) => {
     res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
