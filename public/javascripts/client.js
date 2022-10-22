@@ -17,11 +17,10 @@ button[0].addEventListener('click', function(e) {
         var item = data[i]['name'];
         var date = data[i]['curr_date'];
         var old_date = new Date(date);
-        console.log(typeof old_date);
         if(!set.has(item)){
           if(old_date>today - (1000 * 60 * 60 * 24 * 7)){
-            console.log(date-today);
             var li = document.createElement("li");
+            li.setAttribute('id','shopping-list-li')
             li.appendChild(document.createTextNode(item));
             ul.appendChild(li);
           }
