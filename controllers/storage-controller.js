@@ -1,5 +1,6 @@
 const sItem = require("../models/storage-model");
 const TEST_USER = "Shane"; // TODO: Implement feat-user
+
 // Create and Save a new Item
 exports.create = (req, res) => {
   const item = new sItem({
@@ -30,6 +31,8 @@ exports.create = (req, res) => {
 // Retrieve all Items from the database.
 exports.findAll = (req, res) => {
   // const user = req.query.user;
+  console.log('Endpoint findAll is called.');
+  
   const user = TEST_USER;
   let condition = user
     ? { user: { $regex: new RegExp(user), $options: "i" } }
@@ -37,6 +40,7 @@ exports.findAll = (req, res) => {
 
   sItem.find(condition)
     .then(data => {
+      console.log('export data: ' + data);
       res.send(data);
     })
     .catch(err => {
