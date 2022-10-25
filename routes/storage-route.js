@@ -11,7 +11,7 @@ router.get("/", storages.findAll);
 router.get("/:user", storages.findUser);
 
 // Update a Item with id
-router.put("/:id", storages.update);
+// router.put("/:id", storages.update);
 
 // Delete a Item with id
 router.delete("/:id", storages.delete);

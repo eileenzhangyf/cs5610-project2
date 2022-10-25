@@ -12,10 +12,28 @@ const uri = process.env.URI_SHANE;
 // Sample find with Mongo Driver
 /////////////////////////
 
+// Create and Save a new Item
+exports.create = (req, res) => {
+  let data = {
+      user: TEST_USER,
+      item: req.body.item,
+      category: req.body.category,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      purchased: new Date(req.body.purchasedDate),
+      daysLast: req.body.daysLast,
+  };
+
+  db.collection('storages')
+    .insertOne(data, (err, results) => {
+      if (err) console.error(err || `Error occurred when inserting data=${data}.`);
+      console.log('results', results);
+      res.send(results);
+    });
+};
+
 // Retrieve all Items from the database.
 exports.findAll = (req, res) => {
-  // const user = req.query.user;
-
   MongoClient.connect(uri, async (err, client) => {
     try {
       const storages = client.db(TEST_DB).collection('storages');
@@ -28,7 +46,7 @@ exports.findAll = (req, res) => {
       const query = {};
       const options = {
         sort: { name: 1 },
-        projection: { _id: 0, name: 1, item: 1, category:1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
+        projection: { name: 1, item: 1, category:1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
       };
 
       // print a message if no documents were found
@@ -62,12 +80,12 @@ exports.findUser = async (req, res) => {
   console.log("Endpoint findOne called with user=" + user);
 
   try {
-    // const query = { _id : new ObjectId("634e3e1e8ec04f9c6059d753") } // By Id
+    // const query = { _id : new ObjectId("634e3e1e8ec04f9c6059d753") }; // By Id
     // const query = { "category": category }; // By Category
     const query = { user : user }; // By User
     const options = {
       sort: { name: 1 },
-      projection: { _id: 1, user: 1, name: 1, item: 1, category: 1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
+      projection: { user: 1, name: 1, item: 1, category: 1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
     };
     
     db.collection('storages')
@@ -80,9 +98,30 @@ exports.findUser = async (req, res) => {
     console.error(err);
     res.status(500)
       .send({ message:
-        err.message || `Some error occurred while retrieving Storage Item for user=${user}.`
+        err.message || `Error occurred while retrieving Storage Item for user=${user}.`
       });
   }
+};
+
+// Delete a Item with the specified id in the request
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  
+  db.collection("storages")
+    .deleteOne(query, (err, results) => {
+      if (err) console.error(err || `Error occurred when deleting id=${id}.`);
+      // console.log('results', results);
+
+      let msg = "";
+      if (results.deletedCount === 1) {
+        msg = "Successfully deleted one document.";
+      } else {
+        msg = `No document matched id=${id}. Deleted 0 document.`;
+      }
+      console.log(msg);
+      res.send(msg);
+    });
 };
 
 //////////////////////////////////////////////////
@@ -92,29 +131,29 @@ exports.findUser = async (req, res) => {
 /////////////////////////
 
 // Create and Save a new Item
-exports.create = (req, res) => {
-  const item = new sItem({
-        user: TEST_USER,
-        name: req.body.name,
-        category: req.body.category,
-        price: req.body.price,
-        quantity: req.body.quantity,
-        purchased: new Date(req.body.purchasedDate),
-        daysLast: req.body.daysLast,
-    });
+// exports.create = (req, res) => {
+//   const item = new sItem({
+//         user: TEST_USER,
+//         name: req.body.name,
+//         category: req.body.category,
+//         price: req.body.price,
+//         quantity: req.body.quantity,
+//         purchased: new Date(req.body.purchasedDate),
+//         daysLast: req.body.daysLast,
+//     });
 
-  item.save(item)
-    .then(data => {
-      res.send(data);
-      console.log('Item saved successfully!\n', data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Errors occurred while creating the Storage Item."
-      });
-    });
-};
+//   item.save(item)
+//     .then(data => {
+//       res.send(data);
+//       console.log('Item saved successfully!\n', data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Errors occurred while creating the Storage Item."
+//       });
+//     });
+// };
 
 
 // Retrieve all Items from the database.
@@ -164,27 +203,27 @@ exports.update = (req, res) => {
 };
 
 // Delete a Item with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
+// exports.delete = (req, res) => {
+//   const id = req.params.id;
 
-  sItem.findByIdAndRemove(id)
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot delete Item with id=${id}.`
-        });
-      } else {
-        res.send({
-          message: "Item was deleted successfully!"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Could not delete Item with id=${id}.`
-      });
-    });
-};
+//   sItem.findByIdAndRemove(id)
+//     .then(data => {
+//       if (!data) {
+//         res.status(404).send({
+//           message: `Cannot delete Item with id=${id}.`
+//         });
+//       } else {
+//         res.send({
+//           message: "Item was deleted successfully!"
+//         });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: `Could not delete Item with id=${id}.`
+//       });
+//     });
+// };
 
 // Delete all Items from the database.
 exports.deleteAll = (req, res) => {
