@@ -53,18 +53,27 @@ router.get('/storage', function(req, res) {
 
 ////////////////////////////////////
 
-const usersRouter = require('./routes/items.js');
-app.use('/item', usersRouter);
+//const usersRouter = require('./routes/items.js');
+//app.use('/item', usersRouter);
+app.post('/item',function(req,res){
+  db.collection('items').insertOne(req.body);
+  res.status(204).send();
+});
 
-const buyRouter = require('./routes/buy.js');
-app.use('/buy',buyRouter);
+
+//const buyRouter = require('./routes/buy.js');
+//app.use('/buy',buyRouter);
+app.post('/buy',function(req,res){
+  db.collection('buys').insertOne(req.body);
+  //res.send('Data received:\n' + JSON.stringify(req.body));
+});
 
 app.use('/',router);
 
 app.get('/buy',(req,res)=>{
   db.collection('buys').find().toArray((err,result)=>{
     if (err) return console.log(err);
-    res.send(result);
+    res.status(204).send();
   })
 });
 
