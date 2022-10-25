@@ -1,40 +1,27 @@
 const express = require('express')
-const mongodb = require('mongodb').MongoClient
 const path = require('path');
 const app = express()
 const port = 7777
 const router = express.Router();
 const bodyParser = require('body-parser');
+const createError = require('http-errors');
 
+require('dotenv').config();
 
-let db;
-
+////////////////////////////////////
+// Basic Configuration
+////////////////////////////////////
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.listen(port,()=>{
-  console.log(`Server listening on ${port}`);
-})
-
+app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
-let connectionString = 'mongodb://localhost:27017/foodkeeper'
-dbConn = mongodb.connect(
-  connectionString,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  function (err, client) {
-    db = client.db()
-    console.log("db connected");
-   // app.listen(7777)
-  }
-)
-/*
-const mongoose = require('mongoose');
-const uri = "mongodb+srv://Yifan:8qTRDXVXgD6MwCno@cluster0.ohharax.mongodb.net/?retryWrites=true&w=majority";
-mongoose.connect(uri, (err, database) => {
-  console.log("Connected to Mongo DB Successfully!!");
-  db = database;
-})*/
+
+// Set Favicon
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
+});
 
 ////////////////////////////////////
 // Page Redirection
@@ -52,6 +39,9 @@ router.get('/storage', function(req, res) {
 });
 
 ////////////////////////////////////
+// Routing
+////////////////////////////////////
+let mongoUtil = require('./db/mongoUtil');
 
 //const usersRouter = require('./routes/items.js');
 //app.use('/item', usersRouter);
@@ -73,14 +63,11 @@ app.use('/',router);
 app.get('/buy',(req,res)=>{
   db.collection('buys').find().toArray((err,result)=>{
     if (err) return console.log(err);
-    res.status(204).send();
+    res.send(result);
   })
 });
 
-app.delete('/done',(req,res)=>{
-  db.collection('buys').deleteMany();
-  console.log(res);
-})
+module.exports = app;
 
 // Setting Favicon
 app.get('/favicon.ico', (req, res) => {
@@ -88,4 +75,41 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 
-module.exports = app;
+
+////////////////////////////////////
+////////////////////////////////////
+// Shane's Playground
+////////////////////////////////////
+////////////////////////////////////
+function print(path, layer) {
+  if (layer.route) {
+    layer.route.stack.forEach(print.bind(null, path.concat(split(layer.route.path))))
+  } else if (layer.name === 'router' && layer.handle.stack) {
+    layer.handle.stack.forEach(print.bind(null, path.concat(split(layer.regexp))))
+  } else if (layer.method) {
+    console.log('%s /%s',
+      layer.method.toUpperCase(),
+      path.concat(split(layer.regexp)).filter(Boolean).join('/'))
+  }
+}
+
+function split(thing) {
+  if (typeof thing === 'string') {
+    return thing.split('/')
+  } else if (thing.fast_slash) {
+    return ''
+  } else {
+    var match = thing.toString()
+      .replace('\\/?', '')
+      .replace('(?=\\/|$)', '$')
+      .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
+    return match
+      ? match[1].replace(/\\(.)/g, '$1').split('/')
+      : '<complex:' + thing.toString() + '>'
+  }
+}
+
+
+// Print all routes
+app._router.stack.forEach(print.bind(null, []))
+////////////////////////////////////
