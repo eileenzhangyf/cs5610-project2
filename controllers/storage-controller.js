@@ -1,5 +1,67 @@
+const { MongoClient } = require("mongodb");
+
 const sItem = require("../models/storage-model");
+
 const TEST_USER = "Shane"; // TODO: Implement feat-user
+const TEST_DB = 'test';
+const PROD_DB = 'prod';
+
+const uri = process.env.URI_SHANE;
+
+/////////////////////////
+// Sample find with Mongo Driver
+/////////////////////////
+exports.findAll = (req, res) => {
+  // const user = req.query.user;
+
+  console.log('my uri', uri);
+  MongoClient.connect(uri, async (err, client) => {
+    try {
+      const storages = client.db(TEST_DB).collection('storages');
+
+      /* 
+        Reference: 
+          https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/
+          https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+      */
+      const query = {};
+      const options = {
+        // sort returned documents in ascending order by title (A->Z)
+        sort: { name: 1 },
+        // Include only the `title` and `imdb` fields in each returned document
+        projection: { _id: 0, name: 1, item: 1, category:1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
+      };
+
+      // print a message if no documents were found
+      let cnt = await storages.countDocuments(query);
+      console.log('count: ',  cnt);
+      if (cnt == 0) console.error("No documents found for storages!");
+
+      const cursor = storages.find(query, options);
+      // await cursor.forEach(console.dir);
+
+      console.log('\n\n\ndata:');;
+      let data = await cursor.toArray();
+      console.log(data);
+
+      res.send(data);
+    } catch (err) {
+      console.error(err);
+      res.status(500)
+        .send({ message:
+                err.message || "Some error occurred while retrieving Storage Items."
+            });
+    } finally {
+      await client.close();
+    }
+  });
+};
+
+//////////////////////////////////////////////////
+
+/////////////////////////
+// Depreciated Methods with Mongoose
+/////////////////////////
 
 // Create and Save a new Item
 exports.create = (req, res) => {
@@ -29,27 +91,27 @@ exports.create = (req, res) => {
 
 
 // Retrieve all Items from the database.
-exports.findAll = (req, res) => {
-  // const user = req.query.user;
-  console.log('Endpoint findAll is called.');
-  
-  const user = TEST_USER;
-  let condition = user
-    ? { user: { $regex: new RegExp(user), $options: "i" } }
-    : {};
+// exports.findAll = (req, res) => {
+//   // const user = req.query.user;
+//   console.log('Endpoint findAll is called.');
 
-  sItem.find(condition)
-    .then(data => {
-      console.log('export data: ' + data);
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500)
-        .send({ message:
-          err.message || "Some error occurred while retrieving Storage Items."
-      });
-    });
-};
+//   const user = TEST_USER;
+//   let condition = user
+//     ? { user: { $regex: new RegExp(user), $options: "i" } }
+//     : {};
+
+//   sItem.find(condition)
+//     .then(data => {
+//       console.log('export data: ' + data);
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500)
+//         .send({ message:
+//           err.message || "Some error occurred while retrieving Storage Items."
+//       });
+//     });
+// };
 
 // Find a single Item with an id
 exports.findOne = (req, res) => {
