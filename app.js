@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require("express-session")
 const path = require('path');
 const app = express()
 const port = 7777
@@ -11,8 +12,9 @@ require('dotenv').config();
 ////////////////////////////////////
 // Basic Configuration
 ////////////////////////////////////
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: "No secrete", cookie: {maxAge: 30000} }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
