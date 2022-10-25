@@ -73,7 +73,7 @@ app.use('/',router);
 app.get('/buy',(req,res)=>{
   db.collection('buys').find().toArray((err,result)=>{
     if (err) return console.log(err);
-    res.status(204).send();
+    res.status(200).json(result);;
   })
 });
 
