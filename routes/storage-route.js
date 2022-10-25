@@ -7,8 +7,8 @@ router.post("/", storages.create);
 // Retrieve all Items
 router.get("/", storages.findAll);
 
-// Retrieve a single Item with id
-router.get("/:id", storages.findOne);
+// Retrieve a list of Items with user (name)
+router.get("/:user", storages.findUser);
 
 // Update a Item with id
 router.put("/:id", storages.update);

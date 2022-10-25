@@ -1,20 +1,21 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
+const mongoUtil = require("../db/mongoUtil.js");
+const db = mongoUtil.getDb();
 
-const sItem = require("../models/storage-model");
+const sItem = require("../models/storage-model"); // TODO: depreciated
 
 const TEST_USER = "Shane"; // TODO: Implement feat-user
 const TEST_DB = 'test';
-const PROD_DB = 'prod';
-
 const uri = process.env.URI_SHANE;
 
 /////////////////////////
 // Sample find with Mongo Driver
 /////////////////////////
+
+// Retrieve all Items from the database.
 exports.findAll = (req, res) => {
   // const user = req.query.user;
 
-  console.log('my uri', uri);
   MongoClient.connect(uri, async (err, client) => {
     try {
       const storages = client.db(TEST_DB).collection('storages');
@@ -26,9 +27,7 @@ exports.findAll = (req, res) => {
       */
       const query = {};
       const options = {
-        // sort returned documents in ascending order by title (A->Z)
         sort: { name: 1 },
-        // Include only the `title` and `imdb` fields in each returned document
         projection: { _id: 0, name: 1, item: 1, category:1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
       };
 
@@ -55,6 +54,35 @@ exports.findAll = (req, res) => {
       await client.close();
     }
   });
+};
+
+// Find a list of Items with User (name)
+exports.findUser = async (req, res) => {
+  const user = req.params.user;
+  console.log("Endpoint findOne called with user=" + user);
+
+  try {
+    // const query = { _id : new ObjectId("634e3e1e8ec04f9c6059d753") } // By Id
+    // const query = { "category": category }; // By Category
+    const query = { user : user }; // By User
+    const options = {
+      sort: { name: 1 },
+      projection: { _id: 1, user: 1, name: 1, item: 1, category: 1, price: 1, quantity: 1, purchased: 1, daysLast: 1 },
+    };
+    
+    db.collection('storages')
+      .find(query, options).toArray((err, results) => {
+        if (err) throw err;
+        console.log('results', results);
+        res.send(results);
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500)
+      .send({ message:
+        err.message || `Some error occurred while retrieving Storage Item for user=${user}.`
+      });
+  }
 };
 
 //////////////////////////////////////////////////
@@ -86,7 +114,6 @@ exports.create = (req, res) => {
           err.message || "Errors occurred while creating the Storage Item."
       });
     });
-
 };
 
 
@@ -114,22 +141,22 @@ exports.create = (req, res) => {
 // };
 
 // Find a single Item with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
+// exports.findOne = (req, res) => {
+//   const id = req.params.id;
 
-  sItem.findById(id)
-    .then(data => {
-      if (!data)
-        res.status(404)
-          .send({ message: "Item with id=" + id + " not found" });
-      else
-        res.send(data);
-    })
-    .catch(err => {
-      res.status(500)
-        .send({ message: "Error retrieving Item with id=" + id });
-    });
-};
+//   sItem.findById(id)
+//     .then(data => {
+//       if (!data)
+//         res.status(404)
+//           .send({ message: "Item with id=" + id + " not found" });
+//       else
+//         res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500)
+//         .send({ message: "Error retrieving Item with id=" + id });
+//     });
+// };
 
 // Update a Item by the id in the request
 exports.update = (req, res) => {
