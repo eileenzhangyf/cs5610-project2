@@ -1,4 +1,5 @@
 const express = require('express')
+const mongodb = require('mongodb').MongoClient
 const path = require('path');
 const app = express()
 const port = 7777
@@ -17,13 +18,23 @@ app.listen(port,()=>{
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
-
+let connectionString = 'mongodb://localhost:27017/foodkeeper'
+dbConn = mongodb.connect(
+  connectionString,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  function (err, client) {
+    db = client.db()
+    console.log("db connected");
+   // app.listen(7777)
+  }
+)
+/*
 const mongoose = require('mongoose');
 const uri = "mongodb+srv://Yifan:8qTRDXVXgD6MwCno@cluster0.ohharax.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(uri, (err, database) => {
   console.log("Connected to Mongo DB Successfully!!");
   db = database;
-})
+})*/
 
 ////////////////////////////////////
 // Page Redirection
