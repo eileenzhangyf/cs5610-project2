@@ -1,58 +1,27 @@
 const express = require('express')
-const mongodb = require('mongodb').MongoClient
 const path = require('path');
 const app = express()
 const port = 7777
 const router = express.Router();
 const bodyParser = require('body-parser');
-const { MongoClient } = require("mongodb");
+const createError = require('http-errors');
 
 require('dotenv').config();
 
-
-let db;
-
+////////////////////////////////////
+// Basic Configuration
+////////////////////////////////////
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.listen(port,()=>{
-  console.log(`Server listening on ${port}`);
-})
-
+app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
 
-////////////////////////////////////
-// MongoDB Connection
-////////////////////////////////////
-
-// With Mongoose
-// async function connect_mongoose(uri) {  
-//   await mongoose.connect(uri, () => {
-//       console.log("mongdb is connected");
-//   });
-// }
-// const mongoose = require('mongoose');
-// const uri = "";
-// connect_mongoose(uri);
-
-// With MongoDB
-const uri = process.env.URI_SHANE;
-const client = new MongoClient(uri);
-async function run() {
-  try {
-    // Connect the client to the server (optional starting in v4.7)
-    await client.connect();
-    // Establish and verify connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Connected successfully to server");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
-
+// Set Favicon
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
+});
 
 ////////////////////////////////////
 // Page Redirection
@@ -70,17 +39,31 @@ router.get('/storage', function(req, res) {
 });
 
 ////////////////////////////////////
+// Routing
+////////////////////////////////////
+let mongoUtil = require('./db/mongoUtil');
 
-const usersRouter = require('./routes/items.js');
-app.use('/item', usersRouter);
+// Create a reusable shared db connection 
+mongoUtil.connectToServer((err) => {
+  let usersRouter = require('./routes/items.js');
+  let storageRouter = require("./routes/storage-route.js");
+  
+  app.use('/', router)
+  app.use('/item', usersRouter);
+  app.use('/api/storage', storageRouter);
 
+  // Forward 404 to error handler
+  app.use(function(req, res, next) {
+    next(createError(404));
+  });
 
-app.use('/',router)
-
-
-// Setting Favicon
-app.get('/favicon.ico', (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
+  // Error handler
+  app.use(function(err, req, res) {
+    res.locals.message = err.message;
+    res.locals.error = err || "MongoDB connection error.";
+    res.status(err.status || 500);
+    res.render('error');
+  });
 });
 
 module.exports = app;
@@ -118,10 +101,7 @@ function split(thing) {
   }
 }
 
-const storageRouter = require("./routes/storage-route.js");
-app.use('/api/storage', storageRouter);
 
 // Print all routes
 app._router.stack.forEach(print.bind(null, []))
-
 ////////////////////////////////////
