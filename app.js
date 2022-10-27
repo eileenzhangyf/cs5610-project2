@@ -20,6 +20,17 @@ app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
 
+let connectionString = 'mongodb://localhost:27017/foodkeeper'
+dbConn = mongodb.connect(
+  connectionString,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  function (err, client) {
+    db = client.db()
+    console.log("db connected");
+   // app.listen(7777)
+  }
+)
+
 // Set Favicon
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
