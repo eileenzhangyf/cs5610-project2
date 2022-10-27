@@ -6,7 +6,9 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
 
-require('dotenv').config();
+let db;
+
+//require('dotenv').config();
 
 ////////////////////////////////////
 // Basic Configuration
