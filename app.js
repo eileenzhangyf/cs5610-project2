@@ -69,6 +69,7 @@ app.post('/item',function(req,res){
 //app.use('/buy',buyRouter);
 app.post('/buy',function(req,res){
   db.collection('buys').insertOne(req.body);
+  res.status(204).send();
   //res.send('Data received:\n' + JSON.stringify(req.body));
 });
 
@@ -80,6 +81,11 @@ app.get('/buy',(req,res)=>{
     res.status(200).json(result);;
   })
 });
+
+app.delete('/done',(req,res)=>{
+  db.collection('buys').deleteMany();
+  console.log(res);
+})
 
 module.exports = app;
 

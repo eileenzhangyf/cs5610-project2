@@ -1,7 +1,10 @@
 console.log("client side code running")
 const button = document.getElementsByClassName("carrot-button");
+
 button[0].addEventListener('click', function(e) {
   console.log('button was clicked');
+  const nickname = document.getElementById("nickname").value;
+  console.log(nickname);
   fetch('/buy', {method: 'GET'})
     .then(function(response) {
       if(response.ok) {
@@ -19,18 +22,21 @@ button[0].addEventListener('click', function(e) {
       if(ul.getElementsByTagName("li").length===0){
         const set = new Set();
         for(let i = 0;i<data.length;i++){
-          var item = data[i]['buy'];
+          var name = data[i]['buy'][0];
+          var item = data[i]['buy'][1];
          // var date = data[i]['curr_date'];
          // var old_date = new Date(date);
-          if(!set.has(item)){
+          if(name === nickname){
+            if(!set.has(item)){
             //if(old_date>today - (1000 * 60 * 60 * 24 * 7)){
-            var li = document.createElement("li");
-            li.setAttribute('id','shopping-list-li')
-            li.appendChild(document.createTextNode(item));
-            ul.appendChild(li);
+              var li = document.createElement("li");
+              li.setAttribute('id','shopping-list-li')
+              li.appendChild(document.createTextNode(item));
+              ul.appendChild(li);
            // }
-          }
-          set.add(item)
+            }
+          set.add(item);
+        }
         }
       }
     })
