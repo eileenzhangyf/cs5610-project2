@@ -1,33 +1,40 @@
 const router = require('express').Router();
 const mongoUtil = require("../db/mongoUtil.js");
-// const db = mongoUtil.getDb();
+const db = mongoUtil.getDb();
 
-const mname = 'shane'
-const mpass = '123'
-
-
-
-// Traditional Login
-router.post("/api/v0/login", (req, res) => {
-    const { username, password } = req.body;
-    console.log(username + ":" + password);
+// Simple Login
+router.post("/login", (req, res) => {
+    const { username, email } = req.body;
+    console.log(username + ":" + email);
 
     // Authenticate the User
     const query = { "user": username };
     db.collection('users')
-        .findOne(query, (err, results) => {
-            
+        .findOne(query, async (err, results) => {
+            if (err) throw err;
+            console.log('results', results);
+
+            // User not exist => Register the user
+            if (!results) { 
+                console.log('User does not exist');
+                
+                let data = {
+                    user: username,
+                    email: email
+                };
+                
+                db.collection('users').insertOne(data)
+                    .then(result => {
+                        console.log("User successfully created: "+result.insertedId);
+                    }).catch(err => {
+                        console.error(err || `Error occurred when inserting data=${data}.`);
+                    });   
+            }
+
+            session = req.session;
+            session.user = username;
+            res.redirect('/storage');
         });
-    
-    // if (username == mname && password == mpass) {
-    //     session = req.session;
-    //     session.userid = username;
-    //     console.log(req.session);
-    //     res.redirect('/storage');
-    // } else {
-    //     console.log("Login Failed");
-    //     res.sendFile('views/login.html', {root: __dirname});
-    // }
 });
 
 router.get('/logout',(req,res) => {

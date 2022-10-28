@@ -55,12 +55,12 @@ let mongoUtil = require('./db/mongoUtil');
 // Create a reusable shared db connection 
 mongoUtil.connectToServer((err) => {
   let authRouter = require("./routes/auth.js");
-  let usersRouter = require('./routes/items.js');
+  let itemRouter = require('./routes/items.js');
   let storageRouter = require("./routes/storage-route.js");
   
   app.use('/', router);
   app.use('/', authRouter);
-  app.use('/item', usersRouter);
+  app.use('/item', itemRouter);
   app.use('/api/storage', storageRouter);
 
   // Forward 404 to error handler
