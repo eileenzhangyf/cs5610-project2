@@ -180,7 +180,7 @@ label {
 }
 
 .shopping-form{
-    height: 150px;
+    height: 250px;
     background-color: rgb(188, 233, 218);
 }
 
@@ -275,3 +275,12 @@ img.carrot-img{
 .route-button{
     margin: 70px;
 }
+
+.nickname-input{
+    display: block;
+    text-align: center;
+}
+/* .nickname-label{
+    display: block;
+    text-align: center;
+} */
