@@ -12,10 +12,16 @@ router.post("/login", (req, res) => {
     db.collection('users')
         .findOne(query, async (err, results) => {
             if (err) throw err;
-            console.log('results', results);
 
-            // User not exist => Register the user
-            if (!results) { 
+            if (results) {
+                console.log('User does not exist');
+                
+                // Check email
+                if (results.email != email) {
+                    res.status(401).send('Invalid username or password');
+                    return;
+                }
+            } else { // Register the user
                 console.log('User does not exist');
                 
                 let data = {
@@ -25,7 +31,7 @@ router.post("/login", (req, res) => {
                 
                 db.collection('users').insertOne(data)
                     .then(result => {
-                        console.log("User successfully created: "+result.insertedId);
+                        console.log("User successfully created: " + result.insertedId);
                     }).catch(err => {
                         console.error(err || `Error occurred when inserting data=${data}.`);
                     });   
