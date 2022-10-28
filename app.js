@@ -1,8 +1,9 @@
-const express = require('express')
-const session = require("express-session")
+const express = require('express');
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const path = require('path');
-const app = express()
-const port = 7777
+const app = express();
+const port = 7777;
 const router = express.Router();
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
@@ -12,9 +13,15 @@ require('dotenv').config();
 ////////////////////////////////////
 // Basic Configuration
 ////////////////////////////////////
-app.use(session({ secret: "No secrete", cookie: {maxAge: 30000} }));
+app.use(session({
+  secret: "No secrete",
+  saveUninitialized: true,
+  cookie: { maxAge: 30000 },
+  resave: false
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
@@ -47,10 +54,12 @@ let mongoUtil = require('./db/mongoUtil');
 
 // Create a reusable shared db connection 
 mongoUtil.connectToServer((err) => {
+  let authRouter = require("./routes/auth.js");
   let usersRouter = require('./routes/items.js');
   let storageRouter = require("./routes/storage-route.js");
   
-  app.use('/', router)
+  app.use('/', router);
+  app.use('/', authRouter);
   app.use('/item', usersRouter);
   app.use('/api/storage', storageRouter);
 
