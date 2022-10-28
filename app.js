@@ -1,7 +1,9 @@
-const express = require('express')
+const express = require('express');
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const path = require('path');
-const app = express()
-const port = 7777
+const app = express();
+const port = 7777;
 const router = express.Router();
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
@@ -14,8 +16,15 @@ let db;
 ////////////////////////////////////
 // Basic Configuration
 ////////////////////////////////////
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+  secret: "No secrete",
+  saveUninitialized: true,
+  cookie: { maxAge: 30000 },
+  resave: false
+}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
@@ -57,8 +66,31 @@ router.get('/storage', function(req, res) {
 ////////////////////////////////////
 let mongoUtil = require('./db/mongoUtil');
 
-//const usersRouter = require('./routes/items.js');
-//app.use('/item', usersRouter);
+// Create a reusable shared db connection 
+mongoUtil.connectToServer((err) => {
+  let authRouter = require("./routes/auth.js");
+  let itemRouter = require('./routes/items.js');
+  let storageRouter = require("./routes/storage-route.js");
+  
+  app.use('/', router);
+  app.use('/', authRouter);
+  app.use('/item', itemRouter);
+  app.use('/api/storage', storageRouter);
+
+  // Forward 404 to error handler
+  app.use(function(req, res, next) {
+    next(createError(404));
+  });
+
+  // Error handler
+  app.use(function(err, req, res) {
+    res.locals.message = err.message;
+    res.locals.error = err || "MongoDB connection error.";
+    res.status(err.status || 500);
+    res.render('error');
+  });
+});
+
 app.post('/item',function(req,res){
   db.collection('items').insertOne(req.body);
   res.status(204).send();
@@ -95,7 +127,6 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 
-
 ////////////////////////////////////
 ////////////////////////////////////
 // Shane's Playground
@@ -128,7 +159,6 @@ function split(thing) {
       : '<complex:' + thing.toString() + '>'
   }
 }
-
 
 // Print all routes
 app._router.stack.forEach(print.bind(null, []))
