@@ -9,9 +9,9 @@ const bodyParser = require('body-parser');
 const createError = require('http-errors');
 const mongodb = require('mongodb').MongoClient
 
-let db;
+// let db;
 
-//require('dotenv').config();
+require('dotenv').config();
 
 ////////////////////////////////////
 // Basic Configuration
@@ -30,16 +30,16 @@ app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
 
-let connectionString = 'mongodb://localhost:27017/foodkeeper'
-dbConn = mongodb.connect(
-  connectionString,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  function (err, client) {
-    db = client.db()
-    console.log("db connected");
-   // app.listen(7777)
-  }
-)
+// let connectionString = process.env.URI_SHANE || 'mongodb://localhost:27017/foodkeeper'
+// dbConn = mongodb.connect(
+//   connectionString,
+//   { useNewUrlParser: true, useUnifiedTopology: true },
+//   function (err, client) {
+//     db = client.db()
+//     console.log("db connected");
+//    // app.listen(7777)
+//   }
+// )
 
 // Set Favicon
 app.get('/favicon.ico', (req, res) => {
@@ -71,11 +71,13 @@ mongoUtil.connectToServer((err) => {
   let authRouter = require("./routes/auth.js");
   let itemRouter = require('./routes/items.js');
   let storageRouter = require("./routes/storage-route.js");
+  let buyRouter = require('./routes/buy.js');
   
   app.use('/', router);
   app.use('/', authRouter);
   app.use('/item', itemRouter);
   app.use('/api/storage', storageRouter);
+  app.use('/buy', buyRouter);
 
   // Forward 404 to error handler
   app.use(function(req, res, next) {
@@ -91,41 +93,25 @@ mongoUtil.connectToServer((err) => {
   });
 });
 
-app.post('/item',function(req,res){
-  db.collection('items').insertOne(req.body);
-  res.status(204).send();
-});
+// app.post('/buy',function(req,res){
+//   db.collection('buys').insertOne(req.body);
+//   res.status(204).send();
+//   //res.send('Data received:\n' + JSON.stringify(req.body));
+// });
 
+// app.get('/buy',(req,res)=>{
+//   db.collection('buys').find().toArray((err,result)=>{
+//     if (err) return console.log(err);
+//     res.status(200).json(result);;
+//   })
+// });
 
-//const buyRouter = require('./routes/buy.js');
-//app.use('/buy',buyRouter);
-app.post('/buy',function(req,res){
-  db.collection('buys').insertOne(req.body);
-  res.status(204).send();
-  //res.send('Data received:\n' + JSON.stringify(req.body));
-});
-
-app.use('/',router);
-
-app.get('/buy',(req,res)=>{
-  db.collection('buys').find().toArray((err,result)=>{
-    if (err) return console.log(err);
-    res.status(200).json(result);;
-  })
-});
-
-app.delete('/done',(req,res)=>{
-  db.collection('buys').deleteMany();
-  console.log(res);
-})
+// app.delete('/done',(req,res)=>{
+//   db.collection('buys').deleteMany();
+//   console.log(res);
+// })
 
 module.exports = app;
-
-// Setting Favicon
-app.get('/favicon.ico', (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/images/favicon.ico'));
-});
-
 
 ////////////////////////////////////
 ////////////////////////////////////
