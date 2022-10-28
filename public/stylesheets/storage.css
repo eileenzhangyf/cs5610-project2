@@ -85,8 +85,9 @@ td {
   line-height: 2.8;
 }
 
-th:last-of-type, td:last-of-type {
-  width: 60px;
+td > input {
+  width: 100%;
+  height:fit-content;
 }
 
 th {
@@ -167,3 +168,20 @@ th {
 }
 
 /*# sourceMappingURL=storage.css.map */
+
+.actionBtn {
+  border-radius: 0.4rem;
+  padding: 0.2rem;
+  
+}
+
+.editBtn {
+  color: #fff;
+  background-color:#a2a2a2;
+}
+
+.deleteBtn {
+  color: #fff;
+  background-color:#fd0000;
+  border-color: white;
+}
