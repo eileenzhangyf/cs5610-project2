@@ -2,10 +2,8 @@ const { MongoClient, ObjectId } = require("mongodb");
 const mongoUtil = require("../db/mongoUtil.js");
 const db = mongoUtil.getDb();
 
-const sItem = require("../models/storage-model"); // TODO: depreciated
-
-const TEST_USER = "Shane"; // TODO: Implement feat-user
-const TEST_DB = 'test';
+const TEST_USER = "Shane"
+const TEST_DB = process.env.TEST_DB;
 const uri = process.env.URI_SHANE;
 
 /////////////////////////
@@ -14,6 +12,8 @@ const uri = process.env.URI_SHANE;
 
 // Create and Save a new Item
 exports.create = (req, res) => {
+  console.log("Create called: ", req);
+
   let data = {
       user: TEST_USER,
       item: req.body.item,
@@ -36,13 +36,9 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   MongoClient.connect(uri, async (err, client) => {
     try {
-      const storages = client.db(TEST_DB).collection('storages');
+      const storages = client.db(TEST_DB)
+        .collection('storages');
 
-      /* 
-        Reference: 
-          https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/
-          https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
-      */
       const query = {};
       const options = {
         sort: { name: 1 },
@@ -106,8 +102,10 @@ exports.findUser = async (req, res) => {
 // Delete a Item with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  const query = { _id: new ObjectId(id) };
   
+  console.log("delete called with id: ", id);
+
+  const query = { _id: new ObjectId(id) };
   db.collection("storages")
     .deleteOne(query, (err, results) => {
       if (err) console.error(err || `Error occurred when deleting id=${id}.`);
@@ -124,108 +122,33 @@ exports.delete = (req, res) => {
     });
 };
 
-//////////////////////////////////////////////////
-
-/////////////////////////
-// Depreciated Methods with Mongoose
-/////////////////////////
-
-// Create and Save a new Item
-// exports.create = (req, res) => {
-//   const item = new sItem({
-//         user: TEST_USER,
-//         name: req.body.name,
-//         category: req.body.category,
-//         price: req.body.price,
-//         quantity: req.body.quantity,
-//         purchased: new Date(req.body.purchasedDate),
-//         daysLast: req.body.daysLast,
-//     });
-
-//   item.save(item)
-//     .then(data => {
-//       res.send(data);
-//       console.log('Item saved successfully!\n', data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Errors occurred while creating the Storage Item."
-//       });
-//     });
-// };
-
-
-// Retrieve all Items from the database.
-// exports.findAll = (req, res) => {
-//   // const user = req.query.user;
-//   console.log('Endpoint findAll is called.');
-
-//   const user = TEST_USER;
-//   let condition = user
-//     ? { user: { $regex: new RegExp(user), $options: "i" } }
-//     : {};
-
-//   sItem.find(condition)
-//     .then(data => {
-//       console.log('export data: ' + data);
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500)
-//         .send({ message:
-//           err.message || "Some error occurred while retrieving Storage Items."
-//       });
-//     });
-// };
-
-// Find a single Item with an id
-// exports.findOne = (req, res) => {
-//   const id = req.params.id;
-
-//   sItem.findById(id)
-//     .then(data => {
-//       if (!data)
-//         res.status(404)
-//           .send({ message: "Item with id=" + id + " not found" });
-//       else
-//         res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500)
-//         .send({ message: "Error retrieving Item with id=" + id });
-//     });
-// };
 
 // Update a Item by the id in the request
 exports.update = (req, res) => {
   
 };
 
-// Delete a Item with the specified id in the request
-// exports.delete = (req, res) => {
-//   const id = req.params.id;
-
-//   sItem.findByIdAndRemove(id)
-//     .then(data => {
-//       if (!data) {
-//         res.status(404).send({
-//           message: `Cannot delete Item with id=${id}.`
-//         });
-//       } else {
-//         res.send({
-//           message: "Item was deleted successfully!"
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: `Could not delete Item with id=${id}.`
-//       });
-//     });
-// };
-
 // Delete all Items from the database.
 exports.deleteAll = (req, res) => {
   
 };
+//////////////////////////////////////////////////
+exports.deleteOne = deleteOne;
+
+function deleteOne(id) {
+  const query = { _id: new ObjectId(id) };
+  db.collection("storages")
+    .deleteOne(query, (err, results) => {
+      if (err) console.error(err || `Error occurred when deleting id=${id}.`);
+      // console.log('results', results);
+
+      let msg = "";
+      if (results.deletedCount === 1) {
+        msg = "Successfully deleted one document.";
+      } else {
+        msg = `No document matched id=${id}. Deleted 0 document.`;
+      }
+      console.log(msg);
+      return msg;
+    });
+}

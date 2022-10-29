@@ -44,12 +44,12 @@
                 <input type="number" id="quantity" name="quantity"/>
                </li>
                <li>
-                 <label for="purchased-date">Purchased Date:</label>
-                 <input type="date" id="purchased-date" name="purchased-date"/>
+                 <label for="purchasedDate">Purchased Date:</label>
+                 <input type="date" id="purchasedDate" name="purchasedDate"/>
                </li>
                <li>
-                <label for="days-last">Days Last:</label>
-                <input type="number" id="days-last" name="days-last"/>
+                <label for="daysLast">Days Last:</label>
+                <input type="number" id="daysLast" name="daysLast"/>
               </li>
               <li class="button">
                 <input class="button" type="submit" value="Submit">
@@ -72,29 +72,6 @@
                 <th scope="col">Remaining Days</th>
                 <th scope="col">Actions</th>
               </tr>
-
-
-              <tr>
-                <td data-label="Item">{data[d].name}</td>
-                <td data-label="Category">{data[d].category}</td>
-                <td data-label="Price">{data[d].price}</td>
-                <td data-label="Quantity">{data[d].quantity}</td>
-                <td data-label="Purchased Date">{d_date}</td>
-                <td data-label="Remaining Days">daysRemained</td>
-                <td data-label="Actions">
-                  <button class="actionBtn editBtn">edit</button>
-                  <button class="actionBtn deleteBtn">delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="text" id="item" name="item"/></td>
-                <td><input type="text" id="category" name="category"/></td>
-                <td><input type="number" id="price" name="price"/></td>
-                <td><input type="number" id="quantity" name="quantity"/></td>
-                <td><input type="date" id="purchased-date" name="purchased-date"/></td>
-                <td><input type="number" id="days-last" name="days-last"/></td>
-              </tr>
-
 
             </thead>
             <tbody id="storage-table-body"></tbody>

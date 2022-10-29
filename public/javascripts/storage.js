@@ -5,14 +5,23 @@ document.addEventListener("DOMContentLoaded", function() {
   loadTable();
 });
 
-
 /////////////////////////
 // Functions with Vanilla JS
 /////////////////////////
-function addRow(tableID, content) {
-  let tableBodyRef = document.getElementById(tableID);
+function clearBody(id=null) {
+  let bodyId = id || 'storage-table-body';
+  let node = document.getElementById(bodyId);
+  while (node.hasChildNodes()) {
+    node.removeChild(node.lastChild);
+    console.log("cleared 1");
+  }
+}
+
+function addRow(bodyId, content, rowId) {
+  let tableBodyRef = document.getElementById(bodyId);
   let newRow = tableBodyRef.insertRow(-1);
   newRow.innerHTML = content;
+  newRow.id = rowId;
   tableBodyRef.appendChild(newRow);
 }
 
@@ -21,13 +30,37 @@ function handleResponse(resp) {
   return resp.json();
 }
 
+function handleDelete(event) {
+  const id = this.parentElement.parentElement.id;
+  console.log(`Del called with id=${id}.`);
+
+  const params = {
+    method: 'DELETE',
+  };
+
+  if (confirm("Confirm to delete this entry?")) {
+    fetch(`/api/storage/${id}`, params)
+      .then((resp) => resp.text())
+      .then((resp) => {
+        console.log("Delete Response: ", resp);
+        clearBody();
+      }).then(() => {
+        loadTable(); // Refresh to show updates
+      }).catch((err) => {
+        console.error(err || `Delete failed with id=${id}`);
+      });
+    
+    
+  }
+}
+
 function decodeDate(rawDate) {
   let date = new Date(rawDate);
   return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
 }
 
 function loadTable() {
-  let tableID = 'storage-table-body'
+  let bodyId = 'storage-table-body';
 
   fetch('/api/storage/')
     .then(handleResponse)
@@ -35,52 +68,56 @@ function loadTable() {
       // console.log('data: ', data);
       
       for (const d in data) {
-        console.log(data[d]);
+        console.log("row: ", data[d]);
+        let rowId = data[d]._id;
         let purchasedDate = data[d].purchased;
         let d_date = decodeDate(purchasedDate);
         let daysLast = data[d].daysLast;
+        console.log('item: ', data[d].item);
+        console.log('daysLast: ', data[d].daysLast);
+        console.log();
 
         // TODO: Calculate w/ daysLast & pucharsedDate
         let daysRemained = daysLast; 
-
-        let content = `<tr>
-              <td data-label="Item">${data[d].name}</td>
-              <td data-label="Category">${data[d].category}</td>
-              <td data-label="Price">${data[d].price}</td>
-              <td data-label="Quantity">${data[d].quantity}</td>
-              <td data-label="Purchased Date">${d_date}</td>
-              <td data-label="Remaining Days">${daysRemained}</td>
-              <td data-label="Actions">
-                <button class="actionBtn editBtn">edit</button>
-                <button class="actionBtn deleteBtn">delete</button>
-                </td>
-              </tr>`
-        addRow(tableID, content);
+        console.log(`days: ${daysLast} : ${daysRemained}`)
+        let content = `
+            <td data-label="Item">${data[d].item || data[d].name}</td>
+            <td data-label="Category">${data[d].category}</td>
+            <td data-label="Price">${data[d].price}</td>
+            <td data-label="Quantity">${data[d].quantity}</td>
+            <td data-label="Purchased Date">${d_date}</td>
+            <td data-label="Remaining Days">${daysRemained}</td>
+            <td data-label="Actions">
+              <button class="actionBtn deleteBtn">delete</button>
+            </td>`;
+        
+        addRow(bodyId, content, rowId);
       }
     }).then(() => {
-      // Add button listeners
-      let editBtns = Array.from(document.getElementsByClassName('editBtn'));
-
-      editBtns.forEach(btn => {
-        btn.addEventListener('click', function handleClick(event) {
-          // console.log('Edit button clicked', event);
-          console.log('button: ', btn);
-          let row = btn.parentElement.parentElement;
-          console.log("cell row: ", row);
-          console.log("1:  ", row.children[1].innerHTML);
-
-          if (btn.innerText == "edit") {
-            row2input(row);
-
-
-            btn.innerText = "ok";
-          } else {
-            
-
-            btn.innerText = "edit";
-          }
-        });
+    // Add button listeners for deletes
+    let deleteBtns = Array.from(document.getElementsByClassName('deleteBtn'));
+      deleteBtns.forEach(btn => {
+        btn.addEventListener('click', handleDelete);
       });
+
+      /*
+      // Add button listeners for edits
+      // let editBtns = Array.from(document.getElementsByClassName('editBtn'));
+      // editBtns.forEach(btn => {
+      //   btn.addEventListener('click', function handleClick(event) {
+      //     console.log('button: ', btn);
+      //     let row = btn.parentElement.parentElement;
+      //     console.log("cell row: ", row);
+      //     console.log("1:  ", row.children[1].innerHTML);
+
+      //     if (btn.innerText == "edit") {
+      //       btn.innerText = "ok";
+      //     } else {
+      //       btn.innerText = "edit";
+      //     }
+      //   });
+      // });
+      */
     }).catch((e) => {
       console.log(`Failed: loading all storage items. ${e}`);
     });
@@ -92,12 +129,6 @@ function row2input(row) {
     vals[i] = row.children[i].innerHTML;
   }
   console.log("vals: ", vals);
-  // let item = row.children[0].innerHTML;
-  // let category = row.children[1].innerHTML;
-  // let price = row.children[2].innerHTML;
-  // let quantity = row.children[3].innerHTML;
-  // let purchasedDate = row.children[4].innerHTML;
-  // let daysLast = row.children[5].innerHTML;
 
   let newRow = 
   `<tr>
@@ -105,7 +136,7 @@ function row2input(row) {
   <td><input type="text" id="category" name="category"/></td>
   <td><input type="number" id="price" name="price"/></td>
   <td><input type="number" id="quantity" name="quantity"/></td>
-  <td><input type="date" id="purchased-date" name="purchased-date"/></td>
+  <td><input type="date" id="purchasedDate" name="purchasedDate"/></td>
   <td><input type="number" id="days-last" name="days-last"/></td>
 </tr>`;
   
@@ -132,6 +163,6 @@ const inputTypes = {
   1: ["text", "category", "category"],
   2: ["number","price","price"],
   3: ["number","quantity","quantity"],
-  4: ["date","purchased-date","purchased-date"],
+  4: ["date","purchasedDate","purchasedDate"],
   5: ["number","days-last","days-last"]
 }
