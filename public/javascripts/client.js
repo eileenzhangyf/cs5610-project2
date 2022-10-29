@@ -1,10 +1,11 @@
 console.log("client side code running")
+//console.log(session.user);
 const button = document.getElementsByClassName("carrot-button");
 
 button[0].addEventListener('click', function(e) {
   console.log('button was clicked');
-  const nickname = document.getElementById("nickname").value;
-  console.log(nickname);
+ // const nickname = document.getElementById("nickname").value;
+ // console.log(nickname);
   fetch('/buy', {method: 'GET'})
     .then(function(response) {
       if(response.ok) {
@@ -26,7 +27,7 @@ button[0].addEventListener('click', function(e) {
           var item = data[i]['buy'][1];
          // var date = data[i]['curr_date'];
          // var old_date = new Date(date);
-          if(name === nickname){
+          //if(name === nickname){
             if(!set.has(item)){
             //if(old_date>today - (1000 * 60 * 60 * 24 * 7)){
               var li = document.createElement("li");
@@ -36,7 +37,7 @@ button[0].addEventListener('click', function(e) {
            // }
             }
           set.add(item);
-        }
+        //}
         }
       }
     })
@@ -48,7 +49,7 @@ button[0].addEventListener('click', function(e) {
 const done_button = document.getElementsByClassName('done-button');
 done_button[0].addEventListener('click',function(e){
   console.log('done button clicked');
-  fetch('/done',{method:'DELETE'})
+  fetch('/buy',{method:'DELETE'})
   .then(function(response){
     alert("Good job finishing your grocery shopping!");
     console.log(response.json());

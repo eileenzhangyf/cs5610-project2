@@ -61,6 +61,9 @@ router.get('/storage', function(req, res) {
   res.sendFile(path.join(__dirname+'/views/storage-list.html'));
 });
 
+
+
+
 ////////////////////////////////////
 // Routing
 ////////////////////////////////////
@@ -78,6 +81,8 @@ mongoUtil.connectToServer((err) => {
   app.use('/item', itemRouter);
   app.use('/api/storage', storageRouter);
   app.use('/buy', buyRouter);
+
+  
 
   // Forward 404 to error handler
   app.use(function(req, res, next) {

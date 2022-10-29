@@ -28,24 +28,30 @@
         <img class="slides" src="/images/slide-2.JPG">
         <img class="slides" src="/images/slide-3.JPG">
     </div>
-    <div><h3>What did you get today?</h3></div>
+    <div><h3>Login to see your grocery</h3></div>
 
     <form action="/login" method="POST">
-        <h3>Login</h3>
-        <div class="mb-3">
-            <label class="form-label">User: </label>
-            <input name="user" type="text" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Password: </label>
-            <input name="password" type="password" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <input type="submit" value="Login">
-        </div>
+        <ul>
+            <li>
+                <label class="form-label">Username: </label>
+                <input name="user" type="text" class="form-control" />
+            </li>
+            <li>
+                <label class="form-label">Password: </label>
+                <input name="password" type="password" class="form-control" />
+            </li>
+        </ul>
+        <ul>
+            <li class="button">
+                <input class="button" type="submit" value="Login">
+            </li>
+ <!--            <li class="button">
+                <input class="button" type="submit" value="Signup">
+            </li> -->
+        </ul>
     </form>
 
-    <form action="/item" method="POST">
+<!--     <form action="/item" method="POST">
         <ul>
            <li>
              <label for="item">Item Name:</label>
@@ -59,7 +65,7 @@
         <li class="button">
             <input class="button" type="submit" value="Submit">
         </li>
-    </form>
+    </form> -->
     <div id="button-routers">
         <div class="button-with-text">
             <button class="route-button">

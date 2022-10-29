@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const uri = process.env.URI_SHANE || "mongodb://localhost:27017";
+const uri = process.env.URI_SHANE || "mongodb://localhost:27017/foodkeeper";
 let _db;
 
 module.exports = {

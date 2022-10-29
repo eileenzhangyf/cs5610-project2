@@ -159,9 +159,9 @@ label {
 .button {
     /* Align buttons with the text fields */
     align-content: center;
-    margin: auto;
-    height: 20px;
-    width: 60px;
+    margin: 30px auto;
+    height: 30px;
+    width: 80px;
   }
   
 /*
