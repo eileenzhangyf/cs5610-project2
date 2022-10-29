@@ -45,7 +45,7 @@ router.post("/login", (req, res) => {
             session = req.session;
             session.user = username;
             console.log(session);
-            res.send(session.user);
+            res.send(session);
             //res.redirect('/storage');
         });
 });
