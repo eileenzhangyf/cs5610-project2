@@ -6,7 +6,7 @@ const TEST_DB = process.env.TEST_DB;
 const uri = process.env.URI_SHANE;
 
 /////////////////////////
-// Sample find with Mongo Driver
+// CRUD with MongoDB Driver
 /////////////////////////
 
 // Create and Save a new Item

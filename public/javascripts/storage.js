@@ -37,9 +37,9 @@ function handleResponse(resp) {
 function handleUnauthorized() {
   console.log("Request unauthorized");
   
-  
-  confirm("Please log in before continue.");
-  window.location.href = "/";
+  // TODO: uncomment after fixing UI
+  // confirm("Please log in before continue.");
+  // window.location.href = "/";
 
   return;
 }
