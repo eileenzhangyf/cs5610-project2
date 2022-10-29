@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
   loadTable();
 });
 
+// TODO: enforce checking on sessions
+
 /////////////////////////
 // Functions with Vanilla JS
 /////////////////////////
@@ -26,8 +28,20 @@ function addRow(bodyId, content, rowId) {
 }
 
 function handleResponse(resp) {
-  if (!resp.ok) throw Error(resp.statusText);
+  console.log("resp: " + resp.status);
+  if (resp.status == 401) return handleUnauthorized();
+  else if (!resp.ok) throw Error(resp.statusText);
   return resp.json();
+}
+
+function handleUnauthorized() {
+  console.log("Request unauthorized");
+  
+  
+  confirm("Please log in before continue.");
+  window.location.href = "/";
+
+  return;
 }
 
 function handleDelete(event) {
@@ -39,7 +53,7 @@ function handleDelete(event) {
   };
 
   if (confirm("Confirm to delete this entry?")) {
-    fetch(`/api/storage/${id}`, params)
+    fetch(`/storage/${id}`, params)
       .then((resp) => resp.text())
       .then((resp) => {
         console.log("Delete Response: ", resp);
@@ -62,7 +76,7 @@ function decodeDate(rawDate) {
 function loadTable() {
   let bodyId = 'storage-table-body';
 
-  fetch('/api/storage/')
+  fetch('/storage/user')
     .then(handleResponse)
     .then((data) => {
       // console.log('data: ', data);
@@ -119,7 +133,8 @@ function loadTable() {
       // });
       */
     }).catch((e) => {
-      console.log(`Failed: loading all storage items. ${e}`);
+      console.log(e.status);
+      console.log(`Failed: loading all storage items. ${e.statusText()}`);
     });
 }
 

@@ -4,20 +4,23 @@ const db = mongoUtil.getDb();
 
 // Simple Login
 router.post("/login", (req, res) => {
-    const { username, email } = req.body;
-    console.log(username + ":" + email);
+    console.log("login/ ", req.body);
+    const username = req.body.user;
+    const password = req.body.password;
+    console.log("up: " + username + ":" + password);
 
     // Authenticate the User
     const query = { "user": username };
     db.collection('users')
-        .findOne(query, async (err, results) => {
+        .findOne(query, (err, results) => {
             if (err) throw err;
+            console.log("results: ", results);
 
             if (results) {
                 console.log('User does not exist');
                 
-                // Check email
-                if (results.email != email) {
+                // Check password
+                if (results.password != password) {
                     res.status(401).send('Invalid username or password');
                     return;
                 }
@@ -26,7 +29,7 @@ router.post("/login", (req, res) => {
                 
                 let data = {
                     user: username,
-                    email: email
+                    password: password
                 };
                 
                 db.collection('users').insertOne(data)
@@ -39,6 +42,7 @@ router.post("/login", (req, res) => {
 
             session = req.session;
             session.user = username;
+            console.log("Session after login: ", req.session); 
             res.redirect('/storage');
         });
 });

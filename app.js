@@ -17,7 +17,10 @@ require('dotenv').config();
 app.use(session({
   secret: "No secrete",
   saveUninitialized: true,
-  cookie: { maxAge: 30000 },
+  cookie: {
+    maxAge: 60000
+    // ,secure: false 
+  },
   resave: false
 }));
 app.use(bodyParser.json());
@@ -63,7 +66,7 @@ mongoUtil.connectToServer((err) => {
   app.use('/', router);
   app.use('/', authRouter);
   app.use('/item', itemRouter);
-  app.use('/api/storage', storageRouter);
+  app.use('/storage', storageRouter);
   app.use('/buy', buyRouter);
 
   // Forward 404 to error handler

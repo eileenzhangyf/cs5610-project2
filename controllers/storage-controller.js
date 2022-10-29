@@ -2,7 +2,6 @@ const { MongoClient, ObjectId } = require("mongodb");
 const mongoUtil = require("../db/mongoUtil.js");
 const db = mongoUtil.getDb();
 
-const TEST_USER = "Shane"
 const TEST_DB = process.env.TEST_DB;
 const uri = process.env.URI_SHANE;
 
@@ -12,10 +11,16 @@ const uri = process.env.URI_SHANE;
 
 // Create and Save a new Item
 exports.create = (req, res) => {
-  console.log("Create called: ", req);
+  const username = req.session.user;
+  console.log("CREATE called with user=" + username);
+
+  if (!username) {
+    res.status(401).send("User unauthorized.");
+    return;
+  }
 
   let data = {
-      user: TEST_USER,
+      user: username,
       item: req.body.item,
       category: req.body.category,
       price: req.body.price,
@@ -27,8 +32,9 @@ exports.create = (req, res) => {
   db.collection('storages')
     .insertOne(data, (err, results) => {
       if (err) console.error(err || `Error occurred when inserting data=${data}.`);
-      console.log('results', results);
-      res.send(results);
+      console.log('Storage CREATE results: ', results);
+      res.status(201);
+      res.redirect('/storage');
     });
 };
 
@@ -72,8 +78,13 @@ exports.findAll = (req, res) => {
 
 // Find a list of Items with User (name)
 exports.findUser = async (req, res) => {
-  const user = req.params.user;
-  console.log("Endpoint findOne called with user=" + user);
+  const user = req.session.user;
+  console.log("Endpoint findUser called with user=" + user);
+
+  if (!user) {
+    res.status(401).send("User unauthorized.");
+    return;
+  }
 
   try {
     // const query = { _id : new ObjectId("634e3e1e8ec04f9c6059d753") }; // By Id

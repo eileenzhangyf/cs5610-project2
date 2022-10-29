@@ -8,7 +8,7 @@ router.post("/", storages.create);
 router.get("/", storages.findAll);
 
 // Retrieve a list of Items with user (name)
-router.get("/:user", storages.findUser);
+router.get("/user", storages.findUser);
 
 // Delete a Item with id
 router.delete("/:id", storages.delete);
