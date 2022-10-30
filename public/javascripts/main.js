@@ -8,21 +8,22 @@ function carousel() {
     x[i].style.display = "none";
   }
   slideIndex++;
-  if (slideIndex > x.length) {slideIndex = 1}
-  if(slideIndex-1>=0 && slideIndex-1<x.length){
-    x[slideIndex-1].style.display = "block";
+  if (slideIndex > x.length) {
+    slideIndex = 1;
+  }
+  if (slideIndex - 1 >= 0 && slideIndex - 1 < x.length) {
+    x[slideIndex - 1].style.display = "block";
   }
   setTimeout(carousel, 2000); // Change image every 2 seconds
 }
 
 var logout_button = document.getElementsByClassName("logout-button");
-logout_button[0].addEventListener('click',function(e){
+logout_button[0].addEventListener("click", () => {
   console.log("log out button clicked");
-  fetch('/logout',{method:'GET'})
-  .then(function(response){
+  fetch("/logout", { method: "GET" }).then(function (response) {
     //console.log(response.json());
-    if(response.ok){
+    if (response.ok) {
       alert("Successfully logged out.");
     }
-  })
+  });
 });

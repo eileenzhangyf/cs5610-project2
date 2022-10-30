@@ -1,90 +1,73 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Foodkeeper</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
-    <script src='./javascripts/main.js'></script>
+    <script src="./javascripts/main.js"></script>
 
-    <link href="./stylesheets/style.css" rel="stylesheet">
-    <link rel="icon" href="favicon.ico">
-</head>
-<body>
+    <link href="./stylesheets/style.css" rel="stylesheet" />
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="logo"><a href="/">Foodkeeper</a></div>
-        <ul class="nav-links">
-            <div class="menu"> 
-                <li><a href="/">Home</a></li>
-                <li><a href="/storage">My Storage</a></li>
-                <li><a href="/list">To Do List</a></li>
-            </div>  
-        </ul>   
+      <div class="logo"><a href="/">Foodkeeper</a></div>
+      <ul class="nav-links">
+        <div class="menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/storage">My Storage</a></li>
+          <li><a href="/list">To Do List</a></li>
+        </div>
+      </ul>
     </nav>
     <div class="slides-container">
-        <img class="slides" src="images/slide-1.JPG">
-        <h3 class="first-text">Save with Foodkeeper</h3>
-        <img class="slides" src="/images/slide-2.JPG">
-        <img class="slides" src="/images/slide-3.JPG">
+      <img class="slides" src="images/slide-1.JPG" />
+      <h3 class="first-text">Save with Foodkeeper</h3>
+      <img class="slides" src="/images/slide-2.JPG" />
+      <img class="slides" src="/images/slide-3.JPG" />
     </div>
     <div><h3>Login to see your grocery</h3></div>
 
     <form action="/login" method="POST">
-        <ul>
-            <li>
-                <label class="form-label">Username: </label>
-                <input name="user" type="text" class="form-control" />
-            </li>
-            <li>
-                <label class="form-label">Password: </label>
-                <input name="password" type="password" class="form-control" />
-            </li>
-        </ul>
-        <ul>
-            <li class="button">
-                <input class="button" type="submit" value="Login">
-            </li>
- <!--            <li class="button">
-                <input class="button" type="submit" value="Signup">
-            </li> -->
-        </ul>
+      <ul>
+        <li>
+          <label class="form-label">Username: </label>
+          <input name="user" type="text" class="form-control" />
+        </li>
+        <li>
+          <label class="form-label">Password: </label>
+          <input name="password" type="password" class="form-control" />
+        </li>
+      </ul>
+      <ul>
+        <li class="button">
+          <input class="button" type="submit" value="Login" />
+        </li>
+      </ul>
     </form>
 
-<!--     <form action="/item" method="POST">
-        <ul>
-           <li>
-             <label for="item">Item Name:</label>
-             <input type="text" id="item" name="item"/>
-           </li> 
-           <li>
-             <label for="price">Price:</label>
-             <input type="text" id="price" name="item"/>
-           </li>
-        </ul>
-        <li class="button">
-            <input class="button" type="submit" value="Submit">
-        </li>
-    </form> -->
     <div id="button-routers">
-        <div class="button-with-text">
-            <button class="route-button">
-                <a href="/list"><img src="/images/cart.jpeg" class="inner"></a>
-                <p>Shopping List</p>
-            </button>
-        </div>
-        <div class="button-with-text">
-            <button class="route-button">
-                <a href="/storage"><img src="/images/fridge.jpeg"  class="inner">
-                </a>
-                <p>My Storage</p>
-            </button>
-        </div>
+      <div class="button-with-text">
+        <button class="route-button">
+          <a href="/list"><img src="/images/cart.jpeg" class="inner" /></a>
+          <p>Shopping List</p>
+        </button>
+      </div>
+      <div class="button-with-text">
+        <button class="route-button">
+          <a href="/storage"
+            ><img src="/images/fridge.jpeg" class="inner" />
+          </a>
+          <p>My Storage</p>
+        </button>
+      </div>
     </div>
     <button class="logout-button">Log out</button>
     <script src="./javascripts/main.js"></script>
-</body>
-<footer class="main-footer">
+  </body>
+  <footer class="main-footer">
     <a class="author-footer">Author: Taohan Zhu & Yifan Zhang</a>
-</footer>
+  </footer>
 </html>
