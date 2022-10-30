@@ -20,6 +20,9 @@ button[0].addEventListener('click', function(e) {
       //console.log(ul.getElementsByTagName("li").length);
       //console.log(ul.getElementsByTagName("li")[0].innerText);
       if(ul.getElementsByTagName("li").length===0){
+        if(data.length===0){
+          alert("Seems like you just finished grocery shopping!");
+        }
         const set = new Set();
         for(let i = 0;i<data.length;i++){
           var name = data[i]['buy'];
@@ -82,10 +85,10 @@ done_button[0].addEventListener('click',function(e){
   fetch('/buy',{method:'DELETE'})
   .then(function(response){
     //alert("Good job finishing your grocery shopping!");
-    console.log(response.json());
+    //console.log(response.json());
     if(response.ok){
       alert("Good job finishing your grocery shopping!");
-      console.log(response.json());
+     // console.log(response.json());
     }
   })
 });
