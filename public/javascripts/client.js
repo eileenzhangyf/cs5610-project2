@@ -81,7 +81,7 @@ done_button[0].addEventListener('click',function(e){
   console.log('done button clicked');
   fetch('/buy',{method:'DELETE'})
   .then(function(response){
-    alert("Good job finishing your grocery shopping!");
+    //alert("Good job finishing your grocery shopping!");
     console.log(response.json());
     if(response.ok){
       alert("Good job finishing your grocery shopping!");

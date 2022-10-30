@@ -5,7 +5,7 @@ const db = mongoUtil.getDb();
 var session;
 
 // Simple Login
-router.post("/login", (req, res) => {
+router.post("/", (req, res) => {
     console.log(req.body);
     const username = req.body.user;
     const password = req.body.password;
@@ -49,8 +49,8 @@ router.post("/login", (req, res) => {
     session.user = username;
     console.log("Session after login: ", req.session);
     console.log(session);
-            res.send(session);
-            //res.redirect("/storage");
+    //res.send(session);
+    res.redirect("/storage");
   });
 });
 

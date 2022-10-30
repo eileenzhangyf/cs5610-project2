@@ -46,7 +46,7 @@ router.get('/',(req,res)=>{
 router.delete('/',(req,res)=>{
   var collection = 'buys'+req.session.user;
   db.collection(collection).deleteMany();
-  console.log(res);
+  res.status(204).send();
 })
 
 module.exports = router;

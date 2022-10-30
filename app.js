@@ -18,7 +18,8 @@ app.use(session({
   secret: "No secrete",
   saveUninitialized: true,
   cookie: {
-    maxAge: 60000
+    expires: new Date(253402300000000)
+    //maxAge: 60000
     // ,secure: false 
   },
   resave: false
@@ -67,7 +68,7 @@ mongoUtil.connectToServer((err) => {
   let buyRouter = require('./routes/buy.js');
   
   app.use('/', router);
-  app.use('/', authRouter);
+  app.use('/login', authRouter);
   app.use('/item', itemRouter);
   app.use('/storage', storageRouter);
   app.use('/buy', buyRouter);
