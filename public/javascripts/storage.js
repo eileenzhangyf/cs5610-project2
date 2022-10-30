@@ -1,24 +1,69 @@
 /////////////////////////
 // Listeners
 /////////////////////////
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   loadTable();
 });
-
 
 /////////////////////////
 // Functions with Vanilla JS
 /////////////////////////
-function addRow(tableID, content) {
-  let tableBodyRef = document.getElementById(tableID);
+function clearBody(id = null) {
+  let bodyId = id || "storage-table-body";
+  let node = document.getElementById(bodyId);
+  while (node.hasChildNodes()) {
+    node.removeChild(node.lastChild);
+    console.log("cleared 1");
+  }
+}
+
+function addRow(bodyId, content, rowId) {
+  let tableBodyRef = document.getElementById(bodyId);
   let newRow = tableBodyRef.insertRow(-1);
   newRow.innerHTML = content;
+  newRow.id = rowId;
   tableBodyRef.appendChild(newRow);
 }
 
 function handleResponse(resp) {
-  if (!resp.ok) throw Error(resp.statusText);
+  console.log("resp: " + resp.status);
+  if (resp.status == 401) return handleUnauthorized();
+  else if (!resp.ok) throw Error(resp.statusText);
   return resp.json();
+}
+
+function handleUnauthorized() {
+  console.log("Request unauthorized");
+
+  // TODO: uncomment after fixing UI
+  // confirm("Please log in before continue.");
+  // window.location.href = "/";
+
+  return;
+}
+
+function handleDelete() {
+  const id = this.parentElement.parentElement.id;
+  console.log(`Del called with id=${id}.`);
+
+  const params = {
+    method: "DELETE"
+  };
+
+  if (confirm("Confirm to delete this entry?")) {
+    fetch(`/storage/${id}`, params)
+      .then((resp) => resp.text())
+      .then((resp) => {
+        console.log("Delete Response: ", resp);
+        clearBody();
+      })
+      .then(() => {
+        loadTable(); // Refresh to show updates
+      })
+      .catch((err) => {
+        console.error(err || `Delete failed with id=${id}`);
+      });
+  }
 }
 
 function decodeDate(rawDate) {
@@ -27,46 +72,68 @@ function decodeDate(rawDate) {
 }
 
 function loadTable() {
-  let tableID = 'storage-table-body'
+  let bodyId = "storage-table-body";
 
-  fetch('/api/storage/')
+  fetch("/storage/user")
     .then(handleResponse)
     .then((data) => {
       // console.log('data: ', data);
-      
+
       for (const d in data) {
-        console.log(data[d]);
+        console.log("row: ", data[d]);
+        let rowId = data[d]._id;
         let purchasedDate = data[d].purchased;
         let d_date = decodeDate(purchasedDate);
         let daysLast = data[d].daysLast;
+        console.log("item: ", data[d].item);
+        console.log("daysLast: ", data[d].daysLast);
+        console.log();
 
         // TODO: Calculate w/ daysLast & pucharsedDate
-        let daysRemained = daysLast; 
+        let daysRemained = daysLast;
+        console.log(`days: ${daysLast} : ${daysRemained}`);
+        let content = `
+            <td data-label="Item">${data[d].item || data[d].name}</td>
+            <td data-label="Category">${data[d].category}</td>
+            <td data-label="Price">${data[d].price}</td>
+            <td data-label="Quantity">${data[d].quantity}</td>
+            <td data-label="Purchased Date">${d_date}</td>
+            <td data-label="Remaining Days">${daysRemained}</td>
+            <td data-label="Actions">
+              <button class="actionBtn deleteBtn">delete</button>
+            </td>`;
 
-        let content = `<tr>
-              <td data-label="Item">${data[d].name}</td>
-              <td data-label="Category">${data[d].category}</td>
-              <td data-label="Price">${data[d].price}</td>
-              <td data-label="Quantity">${data[d].quantity}</td>
-              <td data-label="Purchased Date">${d_date}</td>
-              <td data-label="Remaining Days">${daysRemained}</td>
-              <td data-label="Edit Button"><button class="editBtn">edit</button></td>
-              </tr>`
-        addRow(tableID, content);
+        addRow(bodyId, content, rowId);
       }
-    }).then(() => {
-      // Add button listeners
-      let btns = Array.from(document.getElementsByClassName('editBtn'));
-
-      btns.forEach(btn => {
-        btn.addEventListener('click', function handleClick(event) {
-          // console.log('Edit button clicked', event);
-          if (btn.innerText == "edit") btn.innerText = "modify";
-          else btn.innerText = "edit";
-        });
+    })
+    .then(() => {
+      // Add button listeners for deletes
+      let deleteBtns = Array.from(document.getElementsByClassName("deleteBtn"));
+      deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", handleDelete);
       });
-    }).catch((e) => {
-      console.log(`Failed: loading all storage items. ${e}`);
+
+      /*
+      // Add button listeners for edits
+      // let editBtns = Array.from(document.getElementsByClassName('editBtn'));
+      // editBtns.forEach(btn => {
+      //   btn.addEventListener('click', function handleClick(event) {
+      //     console.log('button: ', btn);
+      //     let row = btn.parentElement.parentElement;
+      //     console.log("cell row: ", row);
+      //     console.log("1:  ", row.children[1].innerHTML);
+
+      //     if (btn.innerText == "edit") {
+      //       btn.innerText = "ok";
+      //     } else {
+      //       btn.innerText = "edit";
+      //     }
+      //   });
+      // });
+      */
+    })
+    .catch((e) => {
+      console.log(e.status);
+      console.log(`Failed: loading all storage items. ${e.statusText()}`);
     });
 }
-
