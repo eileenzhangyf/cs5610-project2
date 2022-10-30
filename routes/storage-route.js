@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const storages = require("../controllers/storage-controller.js");
 
 // Create a new Item

@@ -1,17 +1,15 @@
 /////////////////////////
 // Listeners
 /////////////////////////
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   loadTable();
 });
-
-// TODO: enforce checking on sessions
 
 /////////////////////////
 // Functions with Vanilla JS
 /////////////////////////
-function clearBody(id=null) {
-  let bodyId = id || 'storage-table-body';
+function clearBody(id = null) {
+  let bodyId = id || "storage-table-body";
   let node = document.getElementById(bodyId);
   while (node.hasChildNodes()) {
     node.removeChild(node.lastChild);
@@ -36,7 +34,7 @@ function handleResponse(resp) {
 
 function handleUnauthorized() {
   console.log("Request unauthorized");
-  
+
   // TODO: uncomment after fixing UI
   // confirm("Please log in before continue.");
   // window.location.href = "/";
@@ -44,12 +42,12 @@ function handleUnauthorized() {
   return;
 }
 
-function handleDelete(event) {
+function handleDelete() {
   const id = this.parentElement.parentElement.id;
   console.log(`Del called with id=${id}.`);
 
   const params = {
-    method: 'DELETE',
+    method: "DELETE"
   };
 
   if (confirm("Confirm to delete this entry?")) {
@@ -58,13 +56,13 @@ function handleDelete(event) {
       .then((resp) => {
         console.log("Delete Response: ", resp);
         clearBody();
-      }).then(() => {
+      })
+      .then(() => {
         loadTable(); // Refresh to show updates
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.error(err || `Delete failed with id=${id}`);
       });
-    
-    
   }
 }
 
@@ -74,26 +72,26 @@ function decodeDate(rawDate) {
 }
 
 function loadTable() {
-  let bodyId = 'storage-table-body';
+  let bodyId = "storage-table-body";
 
-  fetch('/storage/user')
+  fetch("/storage/user")
     .then(handleResponse)
     .then((data) => {
       // console.log('data: ', data);
-      
+
       for (const d in data) {
         console.log("row: ", data[d]);
         let rowId = data[d]._id;
         let purchasedDate = data[d].purchased;
         let d_date = decodeDate(purchasedDate);
         let daysLast = data[d].daysLast;
-        console.log('item: ', data[d].item);
-        console.log('daysLast: ', data[d].daysLast);
+        console.log("item: ", data[d].item);
+        console.log("daysLast: ", data[d].daysLast);
         console.log();
 
         // TODO: Calculate w/ daysLast & pucharsedDate
-        let daysRemained = daysLast; 
-        console.log(`days: ${daysLast} : ${daysRemained}`)
+        let daysRemained = daysLast;
+        console.log(`days: ${daysLast} : ${daysRemained}`);
         let content = `
             <td data-label="Item">${data[d].item || data[d].name}</td>
             <td data-label="Category">${data[d].category}</td>
@@ -104,14 +102,15 @@ function loadTable() {
             <td data-label="Actions">
               <button class="actionBtn deleteBtn">delete</button>
             </td>`;
-        
+
         addRow(bodyId, content, rowId);
       }
-    }).then(() => {
-    // Add button listeners for deletes
-    let deleteBtns = Array.from(document.getElementsByClassName('deleteBtn'));
-      deleteBtns.forEach(btn => {
-        btn.addEventListener('click', handleDelete);
+    })
+    .then(() => {
+      // Add button listeners for deletes
+      let deleteBtns = Array.from(document.getElementsByClassName("deleteBtn"));
+      deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", handleDelete);
       });
 
       /*
@@ -132,52 +131,9 @@ function loadTable() {
       //   });
       // });
       */
-    }).catch((e) => {
+    })
+    .catch((e) => {
       console.log(e.status);
       console.log(`Failed: loading all storage items. ${e.statusText()}`);
     });
-}
-
-function row2input(row) {
-  let vals = [];
-  for (let i = 0; i <= 5; i++) {
-    vals[i] = row.children[i].innerHTML;
-  }
-  console.log("vals: ", vals);
-
-  let newRow = 
-  `<tr>
-  <td><input type="text" id="item" name="item"/></td>
-  <td><input type="text" id="category" name="category"/></td>
-  <td><input type="number" id="price" name="price"/></td>
-  <td><input type="number" id="quantity" name="quantity"/></td>
-  <td><input type="date" id="purchasedDate" name="purchasedDate"/></td>
-  <td><input type="number" id="days-last" name="days-last"/></td>
-</tr>`;
-  
-  const nRow = document.createElement("tr");
-  for (let i = 0; i <= 5; i++) {
-    const cell = document.createElement("td");
-    let input = document.createElement("input");
-    input.type = inputTypes[i];
-    input.id = "id";
-    input.name = "name";
-    input.value = "555";
-    cell.append(input);
-    nRow.append(cell);
-  }
-  
-  console.log(typeof (row) + " " + typeof (nRow));
-  console.log("new cell row: ", row);
-  
-  console.log("new cell nRow: ", nRow);
-}
-
-const inputTypes = {
-  0: ["text", "item", "item"],
-  1: ["text", "category", "category"],
-  2: ["number","price","price"],
-  3: ["number","quantity","quantity"],
-  4: ["date","purchasedDate","purchasedDate"],
-  5: ["number","days-last","days-last"]
 }

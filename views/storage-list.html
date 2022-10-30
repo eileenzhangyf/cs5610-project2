@@ -1,85 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Foodkeeper</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link href="./stylesheets/style.css" rel="stylesheet">
-    <link href="./stylesheets/storage.css" rel="stylesheet">
-</head>
-<body>
-	<!-- navigation bar -->
-	<nav class="navbar">
-        <div class="logo"><a href="/">Foodkeeper</a></div>
-        <ul class="nav-links">
-            <div class="menu"> 
-                <li><a href="/">Home</a></li>
-                <li><a href="/storage">My Storage</a></li>
-                <li><a href="/list">To Do List</a></li>
-            </div>  
-        </ul>   
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="./stylesheets/style.css" rel="stylesheet" />
+    <link href="./stylesheets/storage.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- navigation bar -->
+    <nav class="navbar">
+      <div class="logo"><a href="/">Foodkeeper</a></div>
+      <ul class="nav-links">
+        <div class="menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/storage">My Storage</a></li>
+          <li><a href="/list">To Do List</a></li>
+        </div>
+      </ul>
     </nav>
     <!-- end navigation bar -->
 
     <section>
-        <form action="/storage" method="POST">
-            <ul>
-               <li>
-                 <label for="item">Item:</label>
-                 <input type="text" id="item" name="item"/>
-               </li> 
-               <!-- TODO: Edit it to fit form (POSTMAN) -->
-               <li>
-                 <label for="category">Category:</label>
-                 <input type="text" id="category" name="category"/>
-               </li>
-               <li>
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price"/>
-              </li>
-               <li>
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity"/>
-               </li>
-               <li>
-                 <label for="purchasedDate">Purchased Date:</label>
-                 <input type="date" id="purchasedDate" name="purchasedDate"/>
-               </li>
-               <li>
-                <label for="daysLast">Days Last:</label>
-                <input type="number" id="daysLast" name="daysLast"/>
-              </li>
-              <li>
-                <input type="submit" value="ADD">
-              </li>
-            </ul>
-        </form>
+      <form action="/storage" method="POST">
+        <ul>
+          <li>
+            <label for="item">Item:</label>
+            <input type="text" id="item" name="item" />
+          </li>
+          <!-- TODO: Edit it to fit form (POSTMAN) -->
+          <li>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" />
+          </li>
+          <li>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" />
+          </li>
+          <li>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" />
+          </li>
+          <li>
+            <label for="purchasedDate">Purchased Date:</label>
+            <input type="date" id="purchasedDate" name="purchasedDate" />
+          </li>
+          <li>
+            <label for="daysLast">Days Last:</label>
+            <input type="number" id="daysLast" name="daysLast" />
+          </li>
+          <li>
+            <input type="submit" value="ADD" />
+          </li>
+        </ul>
+      </form>
     </section>
 
     <section>
-        <h2>Grocery List</h2>
-        <div class="box">
-          <table id="storage-table">
-            <thead>
-              <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Category</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantiy</th>
-                <th scope="col">Purchased Date</th>
-                <th scope="col">Remaining Days</th>
-                <th scope="col">Actions</th>
-              </tr>
-
-            </thead>
-            <tbody id="storage-table-body"></tbody>
-          </table>
-        </div> 
+      <h2>Grocery List</h2>
+      <div class="box">
+        <table id="storage-table">
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantiy</th>
+              <th scope="col">Purchased Date</th>
+              <th scope="col">Remaining Days</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="storage-table-body"></tbody>
+        </table>
+      </div>
     </section>
-    
-    <script src='./javascripts/main.js'></script>
-    <script src='./javascripts/storage.js'></script>
-</body>
+
+    <script src="./javascripts/main.js"></script>
+    <script src="./javascripts/storage.js"></script>
+  </body>
 </html>

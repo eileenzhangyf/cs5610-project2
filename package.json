@@ -20,7 +20,9 @@
   "devDependencies": {
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "eslint-config-prettier": "^8.5.0",
     "express-session": "^1.17.3",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1"
   }
 }
