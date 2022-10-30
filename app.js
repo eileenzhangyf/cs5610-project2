@@ -9,8 +9,6 @@ const bodyParser = require('body-parser');
 const createError = require('http-errors');
 const mongodb = require('mongodb').MongoClient
 
-// let db;
-
 require('dotenv').config();
 
 ////////////////////////////////////
@@ -19,7 +17,10 @@ require('dotenv').config();
 app.use(session({
   secret: "No secrete",
   saveUninitialized: true,
-  cookie: { maxAge: 30000 },
+  cookie: {
+    maxAge: 60000
+    // ,secure: false 
+  },
   resave: false
 }));
 app.use(bodyParser.json());
@@ -29,17 +30,6 @@ app.listen(port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
-
-// let connectionString = process.env.URI_SHANE || 'mongodb://localhost:27017/foodkeeper'
-// dbConn = mongodb.connect(
-//   connectionString,
-//   { useNewUrlParser: true, useUnifiedTopology: true },
-//   function (err, client) {
-//     db = client.db()
-//     console.log("db connected");
-//    // app.listen(7777)
-//   }
-// )
 
 // Set Favicon
 app.get('/favicon.ico', (req, res) => {
@@ -76,7 +66,7 @@ mongoUtil.connectToServer((err) => {
   app.use('/', router);
   app.use('/', authRouter);
   app.use('/item', itemRouter);
-  app.use('/api/storage', storageRouter);
+  app.use('/storage', storageRouter);
   app.use('/buy', buyRouter);
 
   // Forward 404 to error handler
@@ -92,24 +82,6 @@ mongoUtil.connectToServer((err) => {
     res.render('error');
   });
 });
-
-// app.post('/buy',function(req,res){
-//   db.collection('buys').insertOne(req.body);
-//   res.status(204).send();
-//   //res.send('Data received:\n' + JSON.stringify(req.body));
-// });
-
-// app.get('/buy',(req,res)=>{
-//   db.collection('buys').find().toArray((err,result)=>{
-//     if (err) return console.log(err);
-//     res.status(200).json(result);;
-//   })
-// });
-
-// app.delete('/done',(req,res)=>{
-//   db.collection('buys').deleteMany();
-//   console.log(res);
-// })
 
 module.exports = app;
 
