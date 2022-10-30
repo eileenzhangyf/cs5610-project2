@@ -163,6 +163,17 @@ label {
     height: 30px;
     width: 80px;
   }
+
+.logout-button{
+    display: block;
+    margin: 40px auto;
+    height:50px;
+    width: 130px;
+    font-size: 18px;
+    color: ivory;
+    border-radius: 5px;
+    background-color: rgb(146, 203, 176);
+}
   
 /*
   button {

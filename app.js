@@ -68,7 +68,7 @@ mongoUtil.connectToServer((err) => {
   let buyRouter = require('./routes/buy.js');
   
   app.use('/', router);
-  app.use('/login', authRouter);
+  app.use('/', authRouter);
   app.use('/item', itemRouter);
   app.use('/storage', storageRouter);
   app.use('/buy', buyRouter);

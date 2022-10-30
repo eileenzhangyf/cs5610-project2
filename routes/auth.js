@@ -5,7 +5,7 @@ const db = mongoUtil.getDb();
 var session;
 
 // Simple Login
-router.post("/", (req, res) => {
+router.post("/login", (req, res) => {
     console.log(req.body);
     const username = req.body.user;
     const password = req.body.password;
