@@ -16,8 +16,7 @@
     "mongoose": "^6.6.5",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
-    "sass": "^1.55.0",
-    "express-session": "^1.17.3"
+    "sass": "^1.55.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
