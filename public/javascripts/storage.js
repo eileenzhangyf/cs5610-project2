@@ -123,6 +123,9 @@ function loadTable() {
 }
 
 const sortColumn = (index, id) => {
+  const tableId = "storage-table";
+  const headers = document.getElementById(tableId).querySelectorAll("th");
+
   const bodyId = id || "storage-table-body";
   const bodyRef = document.getElementById(bodyId);
   const rows = bodyRef.querySelectorAll("tr");
@@ -133,8 +136,28 @@ const sortColumn = (index, id) => {
     const cellA = a.querySelectorAll("td")[index].innerHTML;
     const cellB = b.querySelectorAll("td")[index].innerHTML;
 
-    if (cellA > cellB) return 1;
-    else if (cellA < cellB) return -1;
+    let m, n;
+    switch (index) {
+      case 2:
+      case 3:
+      case 5:
+        m = parseInt(cellA);
+        n = parseInt(cellB);
+        break;
+      case 4:
+        m = new Date(cellA);
+        n = new Date(cellB);
+        break;
+      default:
+        m = cellA;
+        n = cellB;
+    }
+
+    // console.log(typeof m);
+    // console.log(m + " " + n + ": " + (m > n));
+
+    if (m > n) return 1;
+    else if (m < n) return -1;
     else return 0;
   });
 

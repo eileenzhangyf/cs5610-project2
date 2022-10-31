@@ -89,6 +89,24 @@ table {
   table-layout: fixed;
 }
 
+.arrow-down:after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid rgb(196, 196, 196);
+}
+
+.arrow-down:focus {
+  /* Hope this could work  */
+  color: red;
+  border-top: 10px solid yellow;
+}
+
 th {
   background-color: teal;
   color: white;
