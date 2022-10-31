@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const port = 7777;
 const router = express.Router();
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const createError = require('http-errors');
 const mongodb = require('mongodb').MongoClient
 
@@ -24,8 +24,8 @@ app.use(session({
   },
   resave: false
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.listen(process.env.PORT||port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
