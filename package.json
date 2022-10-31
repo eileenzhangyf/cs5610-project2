@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node app.js",
     "dev": "nodemon . & npm run scss",
     "scss": "sass --watch src/scss/storage.scss public/stylesheets/storage.css"
   },
