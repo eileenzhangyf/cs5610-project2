@@ -84,7 +84,7 @@ navbar
 Slides
 */
 .slides {
-  height: auto;
+  height: 600px;
   width: 95%;
   margin: auto;
   display: block;
@@ -124,7 +124,7 @@ form {
   background-color: rgb(188, 233, 218);
 }
 
-ul {
+form ul {
   justify-content: center;
   list-style: none;
   margin: auto;
