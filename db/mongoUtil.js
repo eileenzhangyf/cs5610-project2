@@ -6,7 +6,7 @@ let _db;
 module.exports = {
     connectToServer: function( callback ) {
         MongoClient.connect(uri, (err,client) => {
-            _db = client.db(process.env.PORT);
+            _db = client.db();
             return callback( err );
         });
     },
