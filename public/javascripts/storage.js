@@ -106,9 +106,68 @@ function loadTable() {
       deleteBtns.forEach((btn) => {
         btn.addEventListener("click", handleDelete);
       });
+
+      const table = document.getElementById("storage-table");
+      const headers = table.querySelectorAll("th");
+      [].forEach.call(headers, function (header, index) {
+        header.addEventListener("click", function () {
+          // This function will sort the column
+          sortColumn(index);
+        });
+      });
     })
     .catch((e) => {
       console.log(e.status);
       console.log(`Failed: loading all storage items. ${e.statusText()}`);
     });
 }
+
+const sortColumn = (index, id) => {
+  const tableId = "storage-table";
+  const headers = document.getElementById(tableId).querySelectorAll("th");
+
+  const bodyId = id || "storage-table-body";
+  const bodyRef = document.getElementById(bodyId);
+  const rows = bodyRef.querySelectorAll("tr");
+  const newRows = Array.from(rows);
+  console.log(`sortColumn called with index=${index}, bodyId=${bodyId}`);
+
+  newRows.sort((a, b) => {
+    const cellA = a.querySelectorAll("td")[index].innerHTML;
+    const cellB = b.querySelectorAll("td")[index].innerHTML;
+
+    let m, n;
+    switch (index) {
+      case 2:
+      case 3:
+      case 5:
+        m = parseInt(cellA);
+        n = parseInt(cellB);
+        break;
+      case 4:
+        m = new Date(cellA);
+        n = new Date(cellB);
+        break;
+      default:
+        m = cellA;
+        n = cellB;
+    }
+
+    // console.log(typeof m);
+    // console.log(m + " " + n + ": " + (m > n));
+
+    if (m > n) return 1;
+    else if (m < n) return -1;
+    else return 0;
+  });
+
+  // Remove old rows
+  [].forEach.call(rows, (row) => {
+    bodyRef.removeChild(row);
+  });
+
+  // Append new rows
+  newRows.forEach(function (newRow) {
+    bodyRef.appendChild(newRow);
+  });
+};
