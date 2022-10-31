@@ -17,11 +17,10 @@ function carousel() {
   setTimeout(carousel, 2000); // Change image every 2 seconds
 }
 
-var logout_button = document.getElementsByClassName("logout-button");
-logout_button[0].addEventListener("click", () => {
+var logout_button = document.getElementById("logout-button");
+logout_button.addEventListener("click", () => {
   console.log("log out button clicked");
   fetch("/logout", { method: "GET" }).then(function (response) {
-    //console.log(response.json());
     if (response.ok) {
       alert("Successfully logged out.");
     }

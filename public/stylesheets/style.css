@@ -83,10 +83,9 @@ navbar
 /*
 Slides
 */
-
 .slides {
-  height: 600px;
-  width: 1050px;
+  height: auto;
+  width: 95%;
   margin: auto;
   display: block;
 }
@@ -98,7 +97,8 @@ Slides
   color: rgb(34, 58, 81);
   font-family: Arial, Helvetica, sans-serif;
   padding: 3px;
-  background-color: rgb(217, 249, 238);
+  background-color: rgba(217, 249, 238, 0.425);
+  border-radius: 0.4rem;
 }
 
 .question {
@@ -115,21 +115,23 @@ Form
 form {
   /* Center the form on the page */
   margin: 40px auto;
-  height: 400px;
+  height: 100%;
   width: 500px;
   /* Form outline */
-  padding: 1em;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 1em;
   background-color: rgb(188, 233, 218);
 }
-/* 
+
 ul {
-    list-style: none;
-    margin: auto;
-    padding: 0;
-    margin-left: 20px;
-}*/
+  justify-content: center;
+  list-style: none;
+  margin: auto;
+  padding: 0;
+  margin-left: 20px;
+}
+
 form li {
   margin-left: 60px;
   margin-bottom: 30px;
@@ -172,7 +174,7 @@ label {
   width: 80px;
 }
 
-.logout-button {
+#logout-button {
   display: block;
   margin: 40px auto;
   height: 50px;
@@ -182,14 +184,6 @@ label {
   border-radius: 5px;
   background-color: rgb(146, 203, 176);
 }
-
-/*
-  button {
-    margin-left: 0.5em;
-    size: 80px;
-    height: 20px;
-    width: 60px;
-  }*/
 
 .shopping-question {
   margin-top: 30px;
