@@ -7,7 +7,6 @@ router.post("/login", (req, res) => {
   console.log(req.body);
   const username = req.body.user;
   const password = req.body.password;
-  // const { username, email } = req.body;
   console.log(username + ":" + password);
 
   // Authenticate the User
@@ -45,8 +44,6 @@ router.post("/login", (req, res) => {
 
     let session = req.session;
     session.user = username;
-    // console.log("Session after login: ", req.session);
-    // console.log(session);
     res.redirect("/storage");
   });
 });

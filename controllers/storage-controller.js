@@ -5,7 +5,6 @@ const db = mongoUtil.getDb();
 const TEST_DB = process.env.TEST_DB;
 const uri = process.env.URI_SHANE;
 
-const TEST_USER = "nu";
 /////////////////////////
 // CRUD with MongoDB Driver
 /////////////////////////
@@ -65,7 +64,6 @@ exports.findAll = (req, res) => {
       if (cnt == 0) console.error("No documents found for storages!");
 
       const cursor = storages.find(query, options);
-      // await cursor.forEach(console.dir);
 
       console.log("\n\n\ndata:");
       let data = await cursor.toArray();
@@ -86,8 +84,6 @@ exports.findAll = (req, res) => {
 
 // Find a list of Items with User (name)
 exports.findUser = async (req, res) => {
-  // TODO: Remove TEST_USER after dev
-  // const user = req.session.user || TEST_USER;
   const user = req.session.user;
   console.log("Endpoint findUser called with user=" + user);
 
@@ -97,7 +93,6 @@ exports.findUser = async (req, res) => {
   }
 
   try {
-    // const query = { "category": category }; // By Category
     const query = { user: user }; // By User
     const options = {
       sort: { name: 1 },
@@ -139,7 +134,6 @@ exports.delete = (req, res) => {
   const query = { _id: new ObjectId(id) };
   db.collection("storages").deleteOne(query, (err, results) => {
     if (err) console.error(err || `Error occurred when deleting id=${id}.`);
-    // console.log('results', results);
 
     let msg = "";
     if (results.deletedCount === 1) {
@@ -152,19 +146,11 @@ exports.delete = (req, res) => {
   });
 };
 
-// Update a Item by the id in the request
-exports.update = (req, res) => {};
-
-// Delete all Items from the database.
-exports.deleteAll = (req, res) => {};
-//////////////////////////////////////////////////
 exports.deleteOne = deleteOne;
-
 function deleteOne(id) {
   const query = { _id: new ObjectId(id) };
   db.collection("storages").deleteOne(query, (err, results) => {
     if (err) console.error(err || `Error occurred when deleting id=${id}.`);
-    // console.log('results', results);
 
     let msg = "";
     if (results.deletedCount === 1) {
