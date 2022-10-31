@@ -42,7 +42,7 @@ label {
   font-size: 15px;
 }
 
-ul > li > input[type="submit"]{
+ul > li > input[type="submit"] {
   display: block;
   /* Align buttons with the text fields */
   margin: auto;
@@ -60,12 +60,12 @@ ul > li > input[type="submit"]{
 
 .editBtn {
   color: #fff;
-  background-color:#a2a2a2;
+  background-color: #a2a2a2;
 }
 
 .deleteBtn {
   color: #fff;
-  background-color:#fd0000;
+  background-color: #fd0000;
   border-color: white;
 }
 
@@ -74,6 +74,10 @@ h2 {
   font-size: 2rem;
   color: teal;
   padding-bottom: 1rem;
+}
+
+footer {
+  margin-top: 3rem;
 }
 
 table {
@@ -103,12 +107,13 @@ tr {
   cursor: pointer;
 }
 
-tr:hover, tr:nth-child(2n+0):hover {
+tr:hover,
+tr:nth-child(2n + 0):hover {
   background: #f8fbeb;
   cursor: pointer;
 }
 
-tr:nth-child(2n+0) {
+tr:nth-child(2n + 0) {
   background: white;
 }
 
@@ -119,7 +124,7 @@ td {
 
 td > input {
   width: 100%;
-  height:fit-content;
+  height: fit-content;
 }
 
 .box {
