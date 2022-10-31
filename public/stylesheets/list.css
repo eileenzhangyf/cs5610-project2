@@ -1,0 +1,25 @@
+.inner {
+    display: inline-block;
+    height: 120px;
+    width: 100px;
+  }
+  .route-button {
+    margin: 70px;
+  }
+  
+  .nickname-input {
+    display: block;
+    text-align: center;
+  }
+
+  .done-button:hover {
+    background-color: rgb(120, 184, 184);
+  }
+  
+  #button-routers {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+  }
