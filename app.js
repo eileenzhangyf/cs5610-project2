@@ -27,7 +27,7 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.listen(port,()=>{console.log(`Server listening on ${port}`);})
+app.listen(process.env.PORT||port,()=>{console.log(`Server listening on ${port}`);})
 app.use('/images',express.static(__dirname+'/public/images'));
 app.use('/javascripts',express.static(__dirname+'/public/javascripts'));
 app.use('/stylesheets',express.static(__dirname+'/public/stylesheets'));
