@@ -18,7 +18,6 @@
     "sass": "^1.55.0"
   },
   "devDependencies": {
-    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "eslint-config-prettier": "^8.5.0",
     "express-session": "^1.17.3",
