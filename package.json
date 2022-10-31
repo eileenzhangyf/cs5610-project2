@@ -16,9 +16,7 @@
     "express-session": "^1.17.3",
     "http-errors": "^1.6.3",
     "mongodb": "^4.11.0",
-    "mongoose": "^6.6.5",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11",
     "sass": "^1.55.0"
   },
   "devDependencies": {
