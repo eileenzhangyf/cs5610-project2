@@ -4,17 +4,17 @@ const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/foodkeeper";
 let _db;
 
 module.exports = {
-    connectToServer: function( callback ) {
-        MongoClient.connect(uri, (err,client) => {
-            _db = client.db();
-            return callback( err );
-        });
-    },
+  connectToServer: function (callback) {
+    MongoClient.connect(uri, (err, client) => {
+      _db = client.db();
+      return callback(err);
+    });
+  },
 
-    getDb: function() {
-        return _db;
-    }
+  getDb: function () {
+    return _db;
+  }
 };
 
-// Reference: 
+// Reference:
 //   https://stackoverflow.com/questions/24621940/how-to-properly-reuse-connection-to-mongodb-across-nodejs-application-and-module

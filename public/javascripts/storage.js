@@ -1,5 +1,6 @@
+const DAY_IN_SECOND = 1000 * 3600 * 24;
 /////////////////////////
-// Listeners
+// Initialization
 /////////////////////////
 document.addEventListener("DOMContentLoaded", function () {
   loadTable();
@@ -26,7 +27,6 @@ function addRow(bodyId, content, rowId) {
 }
 
 function handleResponse(resp) {
-  console.log("resp: " + resp.status);
   if (resp.status == 401) return handleUnauthorized();
   else if (!resp.ok) throw Error(resp.statusText);
   return resp.json();
@@ -35,9 +35,8 @@ function handleResponse(resp) {
 function handleUnauthorized() {
   console.log("Request unauthorized");
 
-  // TODO: uncomment after fixing UI
-  // confirm("Please log in before continue.");
-  // window.location.href = "/";
+  confirm("Please log in before continue.");
+  window.location.href = "/";
 
   return;
 }
@@ -66,9 +65,8 @@ function handleDelete() {
   }
 }
 
-function decodeDate(rawDate) {
-  let date = new Date(rawDate);
-  return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+function decodeDate(date) {
+  return `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
 }
 
 function loadTable() {
@@ -77,21 +75,18 @@ function loadTable() {
   fetch("/storage/user")
     .then(handleResponse)
     .then((data) => {
-      // console.log('data: ', data);
-
       for (const d in data) {
-        console.log("row: ", data[d]);
         let rowId = data[d]._id;
-        let purchasedDate = data[d].purchased;
+        let purchasedDate = new Date(data[d].purchased);
         let d_date = decodeDate(purchasedDate);
         let daysLast = data[d].daysLast;
-        console.log("item: ", data[d].item);
-        console.log("daysLast: ", data[d].daysLast);
-        console.log();
-
-        // TODO: Calculate w/ daysLast & pucharsedDate
-        let daysRemained = daysLast;
-        console.log(`days: ${daysLast} : ${daysRemained}`);
+        let today = new Date();
+        let daysRemained = Math.floor(
+          (purchasedDate.getTime() +
+            daysLast * DAY_IN_SECOND -
+            today.getTime()) /
+            DAY_IN_SECOND
+        );
         let content = `
             <td data-label="Item">${data[d].item || data[d].name}</td>
             <td data-label="Category">${data[d].category}</td>
@@ -102,7 +97,6 @@ function loadTable() {
             <td data-label="Actions">
               <button class="actionBtn deleteBtn">delete</button>
             </td>`;
-
         addRow(bodyId, content, rowId);
       }
     })
@@ -112,25 +106,6 @@ function loadTable() {
       deleteBtns.forEach((btn) => {
         btn.addEventListener("click", handleDelete);
       });
-
-      /*
-      // Add button listeners for edits
-      // let editBtns = Array.from(document.getElementsByClassName('editBtn'));
-      // editBtns.forEach(btn => {
-      //   btn.addEventListener('click', function handleClick(event) {
-      //     console.log('button: ', btn);
-      //     let row = btn.parentElement.parentElement;
-      //     console.log("cell row: ", row);
-      //     console.log("1:  ", row.children[1].innerHTML);
-
-      //     if (btn.innerText == "edit") {
-      //       btn.innerText = "ok";
-      //     } else {
-      //       btn.innerText = "edit";
-      //     }
-      //   });
-      // });
-      */
     })
     .catch((e) => {
       console.log(e.status);

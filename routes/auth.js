@@ -2,15 +2,13 @@ const router = require("express").Router();
 const mongoUtil = require("../db/mongoUtil.js");
 const db = mongoUtil.getDb();
 
-var session;
-
 // Simple Login
 router.post("/login", (req, res) => {
-    console.log(req.body);
-    const username = req.body.user;
-    const password = req.body.password;
-   // const { username, email } = req.body;
-    console.log(username + ":" + password);
+  console.log(req.body);
+  const username = req.body.user;
+  const password = req.body.password;
+  // const { username, email } = req.body;
+  console.log(username + ":" + password);
 
   // Authenticate the User
   const query = { user: username };
@@ -47,9 +45,8 @@ router.post("/login", (req, res) => {
 
     let session = req.session;
     session.user = username;
-    console.log("Session after login: ", req.session);
-    console.log(session);
-    //res.send(session);
+    // console.log("Session after login: ", req.session);
+    // console.log(session);
     res.redirect("/storage");
   });
 });
