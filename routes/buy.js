@@ -1,3 +1,6 @@
+// Small suggestion: Use import instead of using require, more up-to-date method
+// to bring packages to code
+
 const express = require('express');
 const session = require("express-session");
 const app = express();
