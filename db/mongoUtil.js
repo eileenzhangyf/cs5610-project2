@@ -18,3 +18,6 @@ module.exports = {
 
 // Reference:
 //   https://stackoverflow.com/questions/24621940/how-to-properly-reuse-connection-to-mongodb-across-nodejs-application-and-module
+
+
+//I would recommend to put mongo API in this file instead of open another folder
