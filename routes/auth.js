@@ -54,3 +54,6 @@ router.get("/logout", (req, res) => {
 });
 
 module.exports = router;
+
+//an alternative way to construct authentication logic is merely return user.password === password as
+//a judement function so that if else can be avoided
