@@ -1,3 +1,5 @@
+{"Suggestion: To use import instead of require you can add type": "module (to be more compliant to current method of importing)"}
+
 {
   "name": "myapp",
   "version": "0.0.0",
